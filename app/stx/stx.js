@@ -16,6 +16,7 @@ function preload() {
     game.load.image('boss_face', 'stx_assets/sprites/boss_face.png', 200, 266);
 }
 
+var speed = 200;
 var MAX_LIVES = 1;
 var player;
 var aliens, boss, cto, coo, ceo;
@@ -34,7 +35,7 @@ var firingTimer = 0;
 var stateText;
 
 var TITLE_STEP = -1;
-var STAGE_STEP = 0;
+var MISSION_STEP = 0;
 var FUNDATION_BOSS_STEP = 1;
 var CTO_STEP = 2;
 var COO_STEP = 3;
@@ -66,7 +67,7 @@ function create() {
     enemyBullets.setAll('outOfBoundsKill', true);
 
     //  The hero!
-    player = game.add.sprite(400, 500, 'ship');
+    player = game.add.sprite(game.world.centerX, game.world.height - 40, 'ship');
     player.anchor.setTo(0.5, 0.5);
 
     //  The baddies!
@@ -76,11 +77,9 @@ function create() {
     coo = game.add.group();
     ceo = game.add.group();
 
-    //
-
     //  The score
     scoreString = 'Score : ';
-    scoreText = game.add.text(10, 100, scoreString + score, { fontSize: '34px', fill: '#fff' });
+    scoreText = game.add.text(10, 200, scoreString + score, { fontSize: '34px', fill: '#fff' });
 
     //  Lives
     lives = game.add.group();
@@ -112,19 +111,35 @@ function create() {
 }
 
 function update() {
-
     //  Scroll the background
-    starfield.tilePosition.y += 2;
-
+    starfield.tilePosition.y += 1;
     //  Reset the player, then check for movement keys
     player.body.velocity.setTo(0, 0);
-
     if (cursors.left.isDown) {
-        player.body.velocity.x = -200;
+        player.body.velocity.x = -speed;
     }
-    else if (cursors.right.isDown) {
-        player.body.velocity.x = 200;
+    if (cursors.right.isDown) {
+        player.body.velocity.x = speed;
     }
+    if (cursors.up.isDown) {
+        player.body.velocity.y = -speed;
+    }
+    if (cursors.down.isDown) {
+        player.body.velocity.y = speed;
+    }
+    if(player.body.x > game.world.width - 230) {
+        player.body.x = game.world.width - 230;
+    }
+    if(player.body.x < 200) {
+        player.body.x = 200;
+    }
+    if(player.body.y > game.world.height-20) {
+        player.body.y = game.world.height - 20;
+    }
+    if(player.body.y < 0) {
+        player.body.y = 0;
+    }
+
 
     //  Firing?
     if (fireButton.isDown) {
@@ -137,7 +152,7 @@ function update() {
 
     if (currentStep === TITLE_STEP) {
         if (game.time.now > (titleChrono + 10000)) {
-            drawHallOfFame();
+            showHallOfFame();
         }
         game.input.onTap.addOnce(createMissionSelectionStep, this);
     }
@@ -147,7 +162,7 @@ function update() {
         }
         game.input.onTap.addOnce(createMissionSelectionStep, this);
     }
-    if (currentStep === STAGE_STEP) {
+    if (currentStep === MISSION_STEP) {
         game.physics.collide(bullets, aliens, collisionHandler, null, this);
     }
     if (currentStep === FUNDATION_BOSS_STEP) {
@@ -167,7 +182,7 @@ function update() {
     //game.physics.collide(enemyBullets, player, enemyHitsPlayer, null, this);
 }
 
-function createXebians() {
+function startMission() {
     var alien = aliens.create(48, 50, 'invader');
     alien.anchor.setTo(0.5, 0.5);
     alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
@@ -177,7 +192,7 @@ function createXebians() {
     aliens.x = 100;
     aliens.y = 50;
     enemyBullets.setAll('outOfBoundsKill', true);
-    currentStep = STAGE_STEP;
+    currentStep = MISSION_STEP;
 
     //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
     //var tween = game.add.tween(aliens).to({ x: 200 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
@@ -195,21 +210,19 @@ function drawTitle() {
 function createMissionSelectionStep() {
     // choose your mission
     //showStage();
-    createXebians();
+    startMission();
 }
 
-function createFundationBoss() {
+function startFundationBossBattle() {
     var bossSprite = boss.create(0, 0, 'boss');
     bossSprite.scale.x = 1.5;
     bossSprite.scale.y = 1.5;
     bossSprite.x = 600;
-
     game.add.sprite(game.world.width - 200, 0, 'boss_face');
-
-
+    currentStep = FUNDATION_BOSS_STEP;
 }
 
-function createCTOBosses() {
+function startCTOBattle() {
     var cto1 = cto.create(48, 50, 'cto1');
     cto1.anchor.setTo(0.5, 0.5);
 
@@ -218,39 +231,44 @@ function createCTOBosses() {
 
     cto.x = 100;
     cto.y = 100;
+
+    currentStep = CTO_STEP;
 }
 
-function createCOO() {
+function startCOOBattle() {
     var alien = coo.create(48, 50, 'coo');
     alien.anchor.setTo(0.5, 0.5);
     coo.x = 100;
     coo.y = 100;
+    currentStep = COO_STEP;
 }
 
-function createCEO() {
+function startCEOBattle() {
     var alien = ceo.create(48, 50, 'ceo');
     alien.anchor.setTo(0.5, 0.5);
     ceo.x = 100;
     ceo.y = 100;
+    currentStep = CEO_STEP;
 }
 
-function drawHallOfFame() {
+function showHallOfFame() {
     currentStep = HALL_OF_FAME_STEP;
     scoreText.visible = false;
     hallOfFameChrono = game.time.now;
 }
 
-function createCongratulationStep() {
+function showCongratulations() {
     scoreText.content = "CONGRATULATIONS";
     stateText.content = " You Won, \n Click to restart";
     stateText.visible = true;
     game.input.keyboard.onDownCallback = inputName;
+    currentStep = CONGRATULATION_STEP;
 }
 
 function inputName(e) {
     scoreText.content += e.keyCode;
     if (e.keyCode == '13' || e.keyCode == 13) {
-        drawHallOfFame();
+        showHallOfFame();
     }
 }
 
@@ -289,8 +307,7 @@ function collisionHandler(bullet, target) {
 
          enemyBullets.callAll('kill', this);
          */
-        currentStep = FUNDATION_BOSS_STEP;
-        createFundationBoss();
+        startFundationBossBattle();
     }
 
 }
@@ -311,8 +328,7 @@ function bossCollisionHandler(bullet, target) {
     explosion.play('kaboom', 30, false, true);
 
     if (boss.countLiving() == 0) {
-        currentStep = CTO_STEP;
-        createCTOBosses();
+        startCTOBattle();
     }
 
 }
@@ -326,8 +342,7 @@ function ctoCollisionHandler(bullet, target) {
     explosion.reset(target.body.x, target.body.y);
     explosion.play('kaboom', 30, false, true);
     if (cto.countLiving() == 0) {
-        currentStep = COO_STEP;
-        createCOO();
+        startCOOBattle();
     }
 }
 
@@ -340,8 +355,7 @@ function cooCollisionHandler(bullet, target) {
     explosion.reset(target.body.x, target.body.y);
     explosion.play('kaboom', 30, false, true);
     if (coo.countLiving() == 0) {
-        currentStep = CEO_STEP;
-        createCEO();
+        startCEOBattle();
     }
 }
 
@@ -354,8 +368,7 @@ function ceoCollisionHandler(bullet, target) {
     explosion.reset(target.body.x, target.body.y);
     explosion.play('kaboom', 30, false, true);
     if (ceo.countLiving() == 0) {
-        currentStep = CONGRATULATION_STEP;
-        createCongratulationStep();
+        showCongratulations();
     }
 
 }
@@ -448,13 +461,13 @@ function restart() {
      lives.callAll('revive');
      //  And brings the aliens back from the dead :)
      aliens.removeAll();
-     createXebians();
+     startMission();
 
      //revives the player
      player.revive();
      //hides the text
      stateText.visible = false;
 
-     currentStep = STAGE_STEP;
+     currentStep = MISSION_STEP;
      */
 }
