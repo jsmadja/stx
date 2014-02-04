@@ -4,16 +4,29 @@ function preload() {
     game.load.image('bullet', 'assets/games/invaders/bullet.png');
     game.load.image('enemyBullet', 'assets/games/invaders/enemy-bullet.png');
     game.load.spritesheet('invader', 'assets/games/invaders/invader32x32x4.png', 32, 32);
+
     game.load.image('boss', 'stx_assets/sprites/boss.png', 193, 94);
+    game.load.image('boss_face', 'stx_assets/sprites/boss_face.png', 200, 266);
+
+    game.load.spritesheet('coo', 'assets/games/tanks/tank4.png', 32, 32);
+    game.load.image('coo_face', 'stx_assets/sprites/coo_face.png', 200, 266);
+
     game.load.spritesheet('cto1', 'assets/games/tanks/tank2.png', 32, 32);
     game.load.spritesheet('cto2', 'assets/games/tanks/tank3.png', 32, 32);
-    game.load.spritesheet('coo', 'assets/games/tanks/tank4.png', 32, 32);
+    game.load.image('cto1_face', 'stx_assets/sprites/cto1_face.png', 200, 266);
+    game.load.image('cto2_face', 'stx_assets/sprites/cto2_face.png', 200, 266);
+
     game.load.spritesheet('ceo', 'assets/games/tanks/tank5.png', 32, 32);
+    game.load.image('ceo_face', 'stx_assets/sprites/ceo_face.png', 200, 266);
+
     game.load.image('ship', 'assets/games/invaders/player.png');
     game.load.spritesheet('kaboom', 'assets/games/invaders/explode.png', 128, 128);
     game.load.image('starfield', 'assets/games/invaders/starfield.png');
     game.load.image('background', 'assets/games/starstruck/background2.png');
-    game.load.image('boss_face', 'stx_assets/sprites/boss_face.png', 200, 266);
+
+    game.load.image('kanban', 'stx_assets/sprites/items/kanban.png');
+
+    game.load.audio('squit', 'assets/audio/goaman_intro.mp3');
 }
 
 var speed = 200;
@@ -47,10 +60,22 @@ var currentStep;
 
 var hallOfFameChrono, titleChrono;
 
+var music;
+
+var items;
+
+var boss_face, cto1_face, cto2_face, coo_face, ceo_face;
+
 function create() {
+
+    music = game.add.audio('squit', 1, true);
+
 
     //  The scrolling starfield background
     starfield = game.add.tileSprite(200, 0, 800, 600, 'starfield');
+
+    items = game.add.group();
+
 
     //  Our bullet group
     bullets = game.add.group();
@@ -127,19 +152,18 @@ function update() {
     if (cursors.down.isDown) {
         player.body.velocity.y = speed;
     }
-    if(player.body.x > game.world.width - 230) {
+    if (player.body.x > game.world.width - 230) {
         player.body.x = game.world.width - 230;
     }
-    if(player.body.x < 200) {
+    if (player.body.x < 200) {
         player.body.x = 200;
     }
-    if(player.body.y > game.world.height-20) {
+    if (player.body.y > game.world.height - 20) {
         player.body.y = game.world.height - 20;
     }
-    if(player.body.y < 0) {
+    if (player.body.y < 0) {
         player.body.y = 0;
     }
-
 
     //  Firing?
     if (fireButton.isDown) {
@@ -164,6 +188,7 @@ function update() {
     }
     if (currentStep === MISSION_STEP) {
         game.physics.collide(bullets, aliens, collisionHandler, null, this);
+        game.physics.collide(items, player, itemCollisionHandler, null, this);
     }
     if (currentStep === FUNDATION_BOSS_STEP) {
         game.physics.collide(bullets, boss, bossCollisionHandler, null, this);
@@ -182,8 +207,25 @@ function update() {
     //game.physics.collide(enemyBullets, player, enemyHitsPlayer, null, this);
 }
 
+function drawTitle() {
+    titleChrono = game.time.now;
+    currentStep = TITLE_STEP;
+}
+
+
+function createMissionSelectionStep() {
+    // choose your mission
+    //showStage();
+    startMission();
+}
+
 function startMission() {
-    var alien = aliens.create(48, 50, 'invader');
+    //    music.play('', 0, 1, true);
+    //item = game.add.text(game.world.centerX, game.world.centerY, "[KANBAN]", { font: "20px Arial", fill: "#ff0044"});
+    var kanban = items.create(game.world.centerX, game.world.centerY, 'kanban');
+    kanban.anchor.setTo(0.5, 0.5);
+
+    var alien = aliens.create(game.world.centerX, 50, 'invader');
     alien.anchor.setTo(0.5, 0.5);
     alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
     alien.play('fly');
@@ -201,33 +243,28 @@ function startMission() {
     //tween.onComplete.add(descend, this);
 }
 
-function drawTitle() {
-    titleChrono = game.time.now;
-    currentStep = TITLE_STEP;
-}
-
-
-function createMissionSelectionStep() {
-    // choose your mission
-    //showStage();
-    startMission();
-}
-
 function startFundationBossBattle() {
     var bossSprite = boss.create(0, 0, 'boss');
     bossSprite.scale.x = 1.5;
     bossSprite.scale.y = 1.5;
     bossSprite.x = 600;
-    game.add.sprite(game.world.width - 200, 0, 'boss_face');
+    boss_face = game.add.sprite(game.world.width - 200, 0, 'boss_face');
     currentStep = FUNDATION_BOSS_STEP;
 }
 
-function startCTOBattle() {
-    var cto1 = cto.create(48, 50, 'cto1');
-    cto1.anchor.setTo(0.5, 0.5);
+function endFundationBossBattle() {
+    boss_face.kill();
+}
 
-    var cto2 = cto.create(48, 50, 'cto2');
+function startCTOBattle() {
+    var cto1 = cto.create(game.world.centerX, 50, 'cto1');
+    cto1.anchor.setTo(0.5, 0.5);
+    cto1_face = game.add.sprite(game.world.width - 200, 0, 'cto1_face');
+
+
+    var cto2 = cto.create(game.world.centerX, 50, 'cto2');
     cto2.anchor.setTo(1, 1);
+    cto2_face = game.add.sprite(game.world.width - 200, 300, 'cto2_face');
 
     cto.x = 100;
     cto.y = 100;
@@ -235,20 +272,39 @@ function startCTOBattle() {
     currentStep = CTO_STEP;
 }
 
+function endCTOBattle() {
+    cto1_face.kill();
+    cto2_face.kill();
+}
+
 function startCOOBattle() {
-    var alien = coo.create(48, 50, 'coo');
+    var alien = coo.create(game.world.centerX, 50, 'coo');
     alien.anchor.setTo(0.5, 0.5);
     coo.x = 100;
     coo.y = 100;
+
+    coo_face = game.add.sprite(game.world.width - 200, 0, 'coo_face');
+
     currentStep = COO_STEP;
 }
 
+function endCOOBattle() {
+    coo_face.kill();
+}
+
 function startCEOBattle() {
-    var alien = ceo.create(48, 50, 'ceo');
+    var alien = ceo.create(game.world.centerX, 50, 'ceo');
     alien.anchor.setTo(0.5, 0.5);
     ceo.x = 100;
     ceo.y = 100;
+
+    ceo_face = game.add.sprite(game.world.width - 200, 0, 'ceo_face');
+
     currentStep = CEO_STEP;
+}
+
+function endCEOBattle() {
+    ceo_face.kill();
 }
 
 function showHallOfFame() {
@@ -266,7 +322,7 @@ function showCongratulations() {
 }
 
 function inputName(e) {
-    scoreText.content += e.keyCode;
+    scoreText.content += String.fromCharCode(e.keyCode).toLowerCase();
     if (e.keyCode == '13' || e.keyCode == 13) {
         showHallOfFame();
     }
@@ -312,6 +368,11 @@ function collisionHandler(bullet, target) {
 
 }
 
+function itemCollisionHandler(player, item) {
+    scoreText.content = "ITEMS!";
+    item.kill();
+}
+
 function bossCollisionHandler(bullet, target) {
 
     //  When a bullet hits an target we kill them both
@@ -328,6 +389,7 @@ function bossCollisionHandler(bullet, target) {
     explosion.play('kaboom', 30, false, true);
 
     if (boss.countLiving() == 0) {
+        endFundationBossBattle();
         startCTOBattle();
     }
 
@@ -342,6 +404,7 @@ function ctoCollisionHandler(bullet, target) {
     explosion.reset(target.body.x, target.body.y);
     explosion.play('kaboom', 30, false, true);
     if (cto.countLiving() == 0) {
+        endCTOBattle();
         startCOOBattle();
     }
 }
@@ -355,6 +418,7 @@ function cooCollisionHandler(bullet, target) {
     explosion.reset(target.body.x, target.body.y);
     explosion.play('kaboom', 30, false, true);
     if (coo.countLiving() == 0) {
+        endCOOBattle();
         startCEOBattle();
     }
 }
@@ -368,6 +432,7 @@ function ceoCollisionHandler(bullet, target) {
     explosion.reset(target.body.x, target.body.y);
     explosion.play('kaboom', 30, false, true);
     if (ceo.countLiving() == 0) {
+        endCEOBattle();
         showCongratulations();
     }
 
