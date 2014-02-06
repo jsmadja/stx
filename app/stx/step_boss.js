@@ -19,6 +19,7 @@ var step_boss = {
     },
 
     update: function () {
+        stx_player.update();
         game.physics.collide(stx_player.bullets, step_boss.boss_group, step_boss.collisionHandler, null, this);
     },
 
@@ -37,7 +38,7 @@ var step_boss = {
         hud.scoreText.content = hud.scoreString + hud.score;
 
         //  And create an explosion :)
-        var explosion = explosions.getFirstDead();
+        var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
 

@@ -25,10 +25,14 @@ var step_cto = {
         step_cto.cto.x = 100;
         step_cto.cto.y = 100;
 
+        background.increaseSpeedBy2();
+
         currentStep = step_cto;
     },
 
     update: function () {
+        stx_player.update();
+        background.update();
         game.physics.collide(stx_player.bullets, step_cto.cto, step_cto.collisionHandler, null, this);
     },
 
@@ -43,7 +47,7 @@ var step_cto = {
         bullet.kill();
         target.kill();
         //  And create an explosion :)
-        var explosion = explosions.getFirstDead();
+        var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
         if (step_cto.cto.countLiving() == 0) {

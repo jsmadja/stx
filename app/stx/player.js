@@ -5,6 +5,7 @@ var stx_player = {
     speed: 200,
     MAX_LIVES: 1,
     player: null,
+    collectedItems:0,
 
     preload: function () {
         game.load.image('bullet', 'assets/games/invaders/bullet.png');
@@ -13,6 +14,8 @@ var stx_player = {
     },
 
     start: function () {
+        collectedItems = 0;
+
         //  Our bullet group
         stx_player.bullets = game.add.group();
         stx_player.bullets.createMultiple(30, 'bullet');
@@ -28,16 +31,16 @@ var stx_player = {
     update: function () {
         //  Reset the player, then check for movement keys
         stx_player.player.body.velocity.setTo(0, 0);
-        if (cursors.left.isDown) {
+        if (controls.cursors.left.isDown) {
             stx_player.player.body.velocity.x = -stx_player.speed;
         }
-        if (cursors.right.isDown) {
+        if (controls.cursors.right.isDown) {
             stx_player.player.body.velocity.x = stx_player.speed;
         }
-        if (cursors.up.isDown) {
+        if (controls.cursors.up.isDown) {
             stx_player.player.body.velocity.y = -stx_player.speed;
         }
-        if (cursors.down.isDown) {
+        if (controls.cursors.down.isDown) {
             stx_player.player.body.velocity.y = stx_player.speed;
         }
         if (stx_player.player.body.x > game.world.width - 230) {
@@ -54,7 +57,7 @@ var stx_player = {
         }
 
         //  Firing?
-        if (fireButton.isDown) {
+        if (controls.fireButton.isDown) {
             stx_player.fireBullet();
         }
         //game.physics.collide(enemyBullets, player, enemyHitsPlayer, null, this);
@@ -74,13 +77,13 @@ var stx_player = {
         }
 
         //  And create an explosion :)
-        var explosion = explosions.getFirstDead();
+        var explosion = effects.explosions.getFirstDead();
         explosion.reset(stx_player.player.body.x, stx_player.player.body.y);
         explosion.play('kaboom', 30, false, true);
 
         // When the player dies
         if (hud.lives.countLiving() < 1) {
-            gameOver();
+            step_gameover.start();
         }
 
     },

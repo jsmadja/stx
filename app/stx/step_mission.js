@@ -4,7 +4,7 @@ var step_mission = {
     enemyBullet: '',
     items: '',
     music: '',
-    enemyBullets:null,
+    enemyBullets: null,
     firingTimer: 0,
 
     preload: function () {
@@ -12,9 +12,12 @@ var step_mission = {
         game.load.spritesheet('invader', 'assets/games/invaders/invader32x32x4.png', 32, 32);
         game.load.audio('squit', 'assets/audio/goaman_intro.mp3');
         game.load.image('kanban', 'stx_assets/sprites/items/kanban.png');
-   },
+    },
 
     start: function () {
+        hud.start();
+        stx_player.start();
+
         // The enemy's bullets
         step_mission.enemyBullets = game.add.group();
         step_mission.enemyBullets.createMultiple(30, 'enemyBullet');
@@ -37,6 +40,8 @@ var step_mission = {
         alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
         alien.play('fly');
 
+        background.starfield.visible = true;
+
         step_mission.aliens.x = 100;
         step_mission.aliens.y = 50;
         step_mission.enemyBullets.setAll('outOfBoundsKill', true);
@@ -50,11 +55,23 @@ var step_mission = {
     },
 
     update: function () {
+        stx_player.update();
+        background.update();
         if (game.time.now > step_mission.firingTimer) {
             step_mission.enemyFires();
         }
         game.physics.collide(stx_player.bullets, step_mission.aliens, step_mission.collisionHandler, null, this);
         game.physics.collide(step_mission.items, stx_player.player, step_mission.itemCollisionHandler, null, this);
+
+        if (step_mission.aliens.countLiving() == 0 && stx_player.collectedItems == 1) {
+            /*
+             score += 1000;
+             scoreText.content = scoreString + score;
+
+             enemyBullets.callAll('kill', this);
+             */
+            step_boss.start();
+        }
     },
 
     end: function () {
@@ -71,24 +88,13 @@ var step_mission = {
         hud.scoreText.content = hud.scoreString + hud.score;
 
         //  And create an explosion :)
-        var explosion = explosions.getFirstDead();
+        var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
-
-        if (step_mission.aliens.countLiving() == 0) {
-            /*
-             score += 1000;
-             scoreText.content = scoreString + score;
-
-             enemyBullets.callAll('kill', this);
-             */
-            step_boss.start();
-        }
-
     },
 
     itemCollisionHandler: function (player, item) {
-        hud.scoreText.content = "ITEMS!";
+        stx_player.collectedItems++;
         item.kill();
     },
 

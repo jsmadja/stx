@@ -4,8 +4,7 @@ var step_congratulations = {
     },
 
     start: function () {
-        hud.scoreText.content = "CONGRATULATIONS";
-        hud.stateText.content = " You Won, \n Click to restart";
+        hud.stateText.content = " CONGRATULATIONS, Enter your name!\n\n";
         hud.stateText.visible = true;
         game.input.keyboard.onDownCallback = step_congratulations.inputName;
         currentStep = step_congratulations;
@@ -15,11 +14,13 @@ var step_congratulations = {
     },
 
     end: function () {
+        game.input.keyboard.onDownCallback = null;
+        hud.stateText.visible = false;
         step_halloffame.start();
     },
 
     inputName: function (e) {
-        hud.scoreText.content += String.fromCharCode(e.keyCode).toLowerCase();
+        hud.stateText.content += String.fromCharCode(e.keyCode).toLowerCase();
         if (e.keyCode == '13' || e.keyCode == 13) {
             step_congratulations.end();
         }

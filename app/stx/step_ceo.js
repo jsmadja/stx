@@ -16,15 +16,20 @@ var step_ceo = {
         step_ceo.ceo.y = 100;
 
         step_ceo.ceo_face = game.add.sprite(game.world.width - 200, 0, 'ceo_face');
+        background.increaseSpeedBy2();
 
         currentStep = step_ceo;
     },
 
     update: function () {
+        stx_player.update();
+        background.update();
         game.physics.collide(stx_player.bullets, step_ceo.ceo, step_ceo.collisionHandler, null, this);
     },
 
     end: function () {
+        hud.scoreText.visible = false;
+        stx_player.player.kill();
         step_ceo.ceo_face.kill();
         step_congratulations.start();
     },
@@ -34,7 +39,7 @@ var step_ceo = {
         bullet.kill();
         target.kill();
         //  And create an explosion :)
-        var explosion = explosions.getFirstDead();
+        var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
         if (step_ceo.ceo.countLiving() == 0) {
