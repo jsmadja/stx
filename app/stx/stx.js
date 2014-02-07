@@ -1,6 +1,7 @@
 var game = new Phaser.Game(1200, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
 function preload() {
+    hud.preload();
     effects.preload();
     background.preload();
     stx_player.preload();

@@ -11,7 +11,16 @@ var hud = {
 
     borderWidth: 200,
 
+    preload: function () {
+        game.load.image('logo', 'stx_assets/sprites/hello-xebia.png');
+    },
+
     start: function () {
+        var logo = game.add.sprite(0, game.world.height - 61, 'logo');
+        logo.scale.x = 0.7;
+        logo.scale.y = 0.7;
+
+
         hud.scoreText = game.add.text(200, 30, 0, { fontSize: '34px', fill: '#fff' });
 
         //  Lives
