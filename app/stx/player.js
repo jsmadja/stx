@@ -9,7 +9,7 @@ var stx_player = {
 
     preload: function () {
         game.load.image('bullet', 'assets/games/invaders/bullet.png');
-        game.load.image('ship', 'stx_assets/sprites/player.png');
+        game.load.image('ship', 'stx_assets/sprites/spiked ship 3. small.png');
 
     },
 

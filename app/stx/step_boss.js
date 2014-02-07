@@ -26,8 +26,6 @@ function playMusic() {
 
 function createBoss() {
     boss.sprite = step_boss.boss_group.create(0, 0, 'boss');
-    boss.sprite.scale.x = 1.5;
-    boss.sprite.scale.y = 1.5;
     boss.sprite.x = 600;
     boss.face = game.add.sprite(game.world.width - 200, 0, 'boss_face');
 
@@ -44,8 +42,8 @@ var step_boss = {
     music: null,
 
     preload: function () {
-        game.load.image('boss', 'stx_assets/sprites/boss.png', 193, 94);
-        game.load.image('boss_face', 'stx_assets/sprites/boss_face.png', 200, 266);
+        game.load.image('boss', 'stx_assets/sprites/player.png');
+        game.load.image('boss_face', 'stx_assets/sprites/boss_face.png');
         game.load.audio('boss_music', 'stx_assets/music/boss.mp3');
         game.load.image('bossBullet', 'assets/games/invaders/enemy-bullet.png');
     },
