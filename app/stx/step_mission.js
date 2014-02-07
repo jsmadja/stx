@@ -78,15 +78,10 @@ var step_mission = {
     },
 
     collisionHandler: function (bullet, target) {
-
         //  When a bullet hits an target we kill them both
         bullet.kill();
         target.kill();
-
-        //  Increase the score
-        hud.score += 20;
-        hud.scoreText.content = hud.scoreString + hud.score;
-
+        hud.increaseScore(500);
         //  And create an explosion :)
         var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);

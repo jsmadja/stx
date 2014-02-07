@@ -10,7 +10,6 @@ var background = {
 
     start: function () {
         background.speed = 1;
-        //  The scrolling starfield background
         background.starfield = game.add.tileSprite(200, 0, 800, 600, 'starfield');
         background.starfield.visible = false;
     },
@@ -23,7 +22,7 @@ var background = {
     },
 
     increaseSpeedBy2: function () {
-        background.speed *= 2;
+        background.speed *= 20;
     }
 
 }

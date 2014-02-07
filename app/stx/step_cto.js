@@ -39,7 +39,8 @@ var step_cto = {
     end: function () {
         step_cto.cto1_face.kill();
         step_cto.cto2_face.kill();
-        step_coo.start();
+        hud.increaseScore(100000);
+        step_congratulations.start();
     },
 
     collisionHandler: function (bullet, target) {
@@ -50,7 +51,10 @@ var step_cto = {
         var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
-        if (step_cto.cto.countLiving() == 0) {
+        if (step_cto.cto.countLiving() == 1) {
+            hud.increaseScore(100000);
+        }
+        if(step_cto.cto.countLiving() === 0) {
             step_cto.end()
         }
     }

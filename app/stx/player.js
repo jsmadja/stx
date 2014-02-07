@@ -2,14 +2,14 @@ var stx_player = {
 
     bulletTime: 0,
     bullets: '',
-    speed: 200,
+    speed: 300,
     MAX_LIVES: 1,
     player: null,
     collectedItems:0,
 
     preload: function () {
         game.load.image('bullet', 'assets/games/invaders/bullet.png');
-        game.load.image('ship', 'assets/games/invaders/player.png');
+        game.load.image('ship', 'stx_assets/sprites/player.png');
 
     },
 
@@ -26,6 +26,8 @@ var stx_player = {
         //  The hero!
         stx_player.player = game.add.sprite(game.world.centerX, game.world.height - 40, 'ship');
         stx_player.player.anchor.setTo(0.5, 0.5);
+        stx_player.player.scale.x = 0.5;
+        stx_player.player.scale.y = 0.5;
     },
 
     update: function () {

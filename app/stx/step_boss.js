@@ -1,7 +1,9 @@
 var step_boss = {
 
     boss_face: '',
-    boss_group:'',
+    boss_group: '',
+    bossSprite: null,
+    boss_energy: 100,
 
     preload: function () {
         game.load.image('boss', 'stx_assets/sprites/boss.png', 193, 94);
@@ -9,11 +11,12 @@ var step_boss = {
     },
 
     start: function () {
+        step_boss.boss_energy = 100;
         step_boss.boss_group = game.add.group();
-        var bossSprite = step_boss.boss_group.create(0, 0, 'boss');
-        bossSprite.scale.x = 1.5;
-        bossSprite.scale.y = 1.5;
-        bossSprite.x = 600;
+        step_boss.bossSprite = step_boss.boss_group.create(0, 0, 'boss');
+        step_boss.bossSprite.scale.x = 1.5;
+        step_boss.bossSprite.scale.y = 1.5;
+        step_boss.bossSprite.x = 600;
         step_boss.boss_face = game.add.sprite(game.world.width - 200, 0, 'boss_face');
         currentStep = step_boss;
     },
@@ -24,27 +27,27 @@ var step_boss = {
     },
 
     end: function () {
+        hud.increaseScore(100000);
         step_boss.boss_face.kill();
         step_cto.start();
     },
 
-    collisionHandler: function (bullet, target) {
-        //  When a bullet hits an target we kill them both
+    collisionHandler: function (bullet, boss) {
+        step_boss.decreaseBossEnergy();
         bullet.kill();
-        target.kill();
-
-        //  Increase the score
-        hud.score += 20;
-        hud.scoreText.content = hud.scoreString + hud.score;
-
-        //  And create an explosion :)
-        var explosion = effects.explosions.getFirstDead();
-        explosion.reset(target.body.x, target.body.y);
-        explosion.play('kaboom', 30, false, true);
-
+        if (step_boss.bossIsOutOfEnergy()) {
+            boss.kill();
+        }
         if (step_boss.boss_group.countLiving() == 0) {
             step_boss.end();
         }
+    },
+    decreaseBossEnergy: function () {
+        step_boss.boss_energy--;
+        hud.setBossEnergy(step_boss.boss_energy);
+    },
+    bossIsOutOfEnergy: function () {
+        return step_boss.boss_energy == 0;
     }
 
 };

@@ -9,8 +9,6 @@ function preload() {
     step_mission.preload();
     step_boss.preload();
     step_cto.preload();
-    step_coo.preload();
-    step_ceo.preload();
     step_gameover.preload();
     step_halloffame.preload();
 }
@@ -28,4 +26,5 @@ function create() {
 
 function update() {
     currentStep.update();
+    hud.update();
 }

@@ -1,16 +1,18 @@
 var hud = {
     score: 0,
-    scoreString: '',
     scoreText: '',
     lives: '',
     livesText: '',
     stateText: '',
     title: '',
+    hiscore: "500.000",
+    bossEnergyText: null,
+    bossEnergy: null,
+
+    borderWidth: 200,
 
     start: function () {
-        hud.score = 0;
-        hud.scoreString = 'Score : ';
-        hud.scoreText = game.add.text(10, 200, hud.scoreString + hud.score, { fontSize: '34px', fill: '#fff' });
+        hud.scoreText = game.add.text(10, 200, 0, { fontSize: '34px', fill: '#fff' });
 
         //  Lives
         hud.lives = game.add.group();
@@ -27,12 +29,59 @@ var hud = {
         hud.title.anchor.setTo(0.5, 0.5);
         hud.title.visible = false;
 
+        // P1 INSERT COIN
+        game.add.text(hud.borderWidth, 0, 'PLAYER 1', {fill: '#fff'});
+
+        // P2 INSERT COIN
+        game.add.text(game.world.width - (hud.borderWidth * 2), 0, 'PLAYER 2', {fill: '#fff'});
+        game.add.text(game.world.width - (hud.borderWidth * 2), 30, 'INSERT-COIN', {fill: '#fff'});
+
+        // HI-SCORE
+        hiscore = game.add.text(game.world.centerX, 0, 'HI-SCORE', {fill: '#fff'});
+        hiscore.anchor.setTo(0.5, 0);
+        hiscore = game.add.text(game.world.centerX, 30, hud.hiscore, {fill: '#fff'});
+        hiscore.anchor.setTo(0.5, 0);
+
+        // CREDITS
+        game.add.text(game.world.width - 330, game.world.height - 40, 'CREDIT 0', {fill: '#fff'});
+
+        // BOSS INFO
+        var photoHeight = 170;
+        game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. CHEVALIER', {fill: '#fff'});
+        game.add.text(game.world.width - hud.borderWidth, photoHeight + 30, 'AGILE PP', {fill: '#fff'});
+        game.add.text(game.world.width - hud.borderWidth, photoHeight + 60, 'POW: 100 KB', {fill: '#fff'});
+        hud.bossEnergyText = game.add.text(game.world.width - hud.borderWidth, photoHeight + 90, '', {fill: '#fff'});
+
         /*
-         for (var i = 0; i < stx_player.MAX_LIVES; i++) {
-         var ship = hud.lives.create(0 + (30 * i), 60, 'ship');
-         ship.anchor.setTo(0.5, 0.5);
-         ship.angle = 90;
-         ship.alpha = 0.4;
-         }*/
+         // BOSS INFO
+         var photoHeight = 170;
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+ game.world.height / 2, 'Cdt LOPEZ', {fill: '#fff'});
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+game.world.height / 2 + 30, 'DATA CTO', {fill: '#fff'});
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+game.world.height / 2 + 60, 'POW: 100 XM', {fill: '#fff'});
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+game.world.height / 2 + 90, 'DEF: 100.000', {fill: '#fff'});
+
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+0, 'Cdt BURET', {fill: '#fff'});
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+30, 'ARCH CTO', {fill: '#fff'});
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+60, 'POW: 100 MD', {fill: '#fff'});
+         game.add.text(game.world.width - hud.borderWidth, photoHeight+90, 'DEF: 100.000', {fill: '#fff'});
+         */
+        // HOW TO PLAY
+        game.add.text(0, 0, 'Use Arrow to \nmove your ship.\n\nCollect items\nto confront\nthe boss.', {fill: '#fff'});
+    },
+
+    increaseScore: function (value) {
+        hud.score += value;
+        hud.scoreText.content = hud.score;
+    },
+
+    setBossEnergy: function (value) {
+        hud.bossEnergy = value;
+
+    },
+    update: function () {
+        if (hud.bossEnergy) {
+            hud.bossEnergyText.setText('DEF: ' + hud.bossEnergy);
+        }
     }
+
 }

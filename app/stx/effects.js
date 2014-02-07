@@ -2,7 +2,6 @@ var effects = {
 
     explosions: null,
 
-
     preload: function () {
         game.load.spritesheet('kaboom', 'assets/games/invaders/explode.png', 128, 128);
     },
