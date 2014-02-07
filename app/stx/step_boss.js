@@ -4,10 +4,12 @@ var step_boss = {
     boss_group: '',
     bossSprite: null,
     boss_energy: 100,
+    music: null,
 
     preload: function () {
         game.load.image('boss', 'stx_assets/sprites/boss.png', 193, 94);
         game.load.image('boss_face', 'stx_assets/sprites/boss_face.png', 200, 266);
+        game.load.audio('boss_music', 'stx_assets/music/boss.mp3');
     },
 
     start: function () {
@@ -19,6 +21,9 @@ var step_boss = {
         step_boss.bossSprite.x = 600;
         step_boss.boss_face = game.add.sprite(game.world.width - 200, 0, 'boss_face');
         currentStep = step_boss;
+
+        step_boss.music = game.add.audio('boss_music');
+        step_boss.music.play();
     },
 
     update: function () {

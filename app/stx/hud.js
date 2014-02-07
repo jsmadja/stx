@@ -12,7 +12,7 @@ var hud = {
     borderWidth: 200,
 
     start: function () {
-        hud.scoreText = game.add.text(10, 200, 0, { fontSize: '34px', fill: '#fff' });
+        hud.scoreText = game.add.text(200, 30, 0, { fontSize: '34px', fill: '#fff' });
 
         //  Lives
         hud.lives = game.add.group();

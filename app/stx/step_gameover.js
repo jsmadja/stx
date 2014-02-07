@@ -1,6 +1,9 @@
 var step_gameover = {
 
+    music: null,
+
     preload: function () {
+        game.load.audio('gameover_music', 'stx_assets/music/game_over.mp3');
     },
 
     start: function () {
@@ -9,6 +12,9 @@ var step_gameover = {
 
         stateText.content = " GAME OVER \n Click to restart";
         stateText.visible = true;
+
+        step_gameover.music = game.add.audio('gameover_music');
+        step_gameover.music.play();
 
         //the "click to restart" handler
         game.input.onTap.addOnce(restart, this);

@@ -37,6 +37,7 @@ var step_cto = {
     },
 
     end: function () {
+        step_boss.music.stop();
         step_cto.cto1_face.kill();
         step_cto.cto2_face.kill();
         hud.increaseScore(100000);

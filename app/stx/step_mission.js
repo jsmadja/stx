@@ -6,12 +6,15 @@ var step_mission = {
     music: '',
     enemyBullets: null,
     firingTimer: 0,
+    music: null,
+    itemMusic:null,
 
     preload: function () {
         game.load.image('enemyBullet', 'assets/games/invaders/enemy-bullet.png');
         game.load.spritesheet('invader', 'assets/games/invaders/invader32x32x4.png', 32, 32);
-        game.load.audio('squit', 'assets/audio/goaman_intro.mp3');
         game.load.image('kanban', 'stx_assets/sprites/items/kanban.png');
+        game.load.audio('mission_music', 'stx_assets/music/mission.mp3');
+        game.load.audio('item_music', 'stx_assets/sound/item_collected.wav');
     },
 
     start: function () {
@@ -25,12 +28,14 @@ var step_mission = {
         step_mission.enemyBullets.setAll('anchor.y', 1);
         step_mission.enemyBullets.setAll('outOfBoundsKill', true);
 
-        //  The baddies!
         step_mission.aliens = game.add.group();
 
         step_mission.items = game.add.group();
-        step_mission.music = game.add.audio('squit', 1, true);
-        //    music.play('', 0, 1, true);
+        step_mission.music = game.add.audio('mission_music');
+        step_mission.itemMusic = game.add.audio('item_music');
+
+        step_mission.music.play();
+
         //item = game.add.text(game.world.centerX, game.world.centerY, "[KANBAN]", { font: "20px Arial", fill: "#ff0044"});
         var kanban = step_mission.items.create(game.world.centerX, game.world.centerY, 'kanban');
         kanban.anchor.setTo(0.5, 0.5);
@@ -70,11 +75,13 @@ var step_mission = {
 
              enemyBullets.callAll('kill', this);
              */
-            step_boss.start();
+            step_mission.end();
         }
     },
 
     end: function () {
+        step_mission.music.stop();
+        step_boss.start();
     },
 
     collisionHandler: function (bullet, target) {
@@ -89,6 +96,7 @@ var step_mission = {
     },
 
     itemCollisionHandler: function (player, item) {
+        step_mission.itemMusic.play();
         stx_player.collectedItems++;
         item.kill();
     },

@@ -23,6 +23,7 @@ var step_halloffame = {
     },
 
     end: function () {
+        step_gameover.music.stop();
         hud.title.visible = false;
     },
     startGame: function () {
