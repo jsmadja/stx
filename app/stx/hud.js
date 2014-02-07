@@ -21,7 +21,8 @@ var hud = {
         logo.scale.y = 0.7;
 
 
-        hud.scoreText = game.add.text(200, 30, 0, { fontSize: '34px', fill: '#fff' });
+        hud.scoreText = game.add.text(315, 30, 0, { fontSize: '34px', fill: '#fff' });
+        hud.increaseScore(0);
 
         //  Lives
         hud.lives = game.add.group();
@@ -43,7 +44,7 @@ var hud = {
 
         // P2 INSERT COIN
         game.add.text(game.world.width - (hud.borderWidth * 2), 0, 'PLAYER 2', {fill: '#fff'});
-        game.add.text(game.world.width - (hud.borderWidth * 2), 30, 'INSERT-COIN', {fill: '#fff'});
+        game.add.text(game.world.width - (hud.borderWidth * 2) - 20, 30, 'INSERT-COIN', {fill: '#fff'});
 
         // HI-SCORE
         hiscore = game.add.text(game.world.centerX, 0, 'HI-SCORE', {fill: '#fff'});
@@ -55,7 +56,7 @@ var hud = {
         game.add.text(game.world.width - 330, game.world.height - 40, 'CREDIT 0', {fill: '#fff'});
 
         // BOSS INFO
-        var photoHeight = 170;
+        var photoHeight = 266;
         game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. CHEVALIER', {fill: '#fff'});
         game.add.text(game.world.width - hud.borderWidth, photoHeight + 30, 'AGILE PP', {fill: '#fff'});
         game.add.text(game.world.width - hud.borderWidth, photoHeight + 60, 'POW: 100 KB', {fill: '#fff'});
@@ -80,7 +81,7 @@ var hud = {
 
     increaseScore: function (value) {
         hud.score += value;
-        hud.scoreText.content = hud.score;
+        hud.scoreText.content = value;
     },
 
     setBossEnergy: function (value) {

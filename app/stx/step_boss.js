@@ -78,6 +78,7 @@ var step_boss = {
     },
 
     collisionHandler: function (bullet, target) {
+        hud.increaseScore(1);
         boss.decreaseEnergy();
         hud.setBossEnergy(boss.energy);
         bullet.kill();

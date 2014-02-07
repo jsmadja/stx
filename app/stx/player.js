@@ -45,14 +45,14 @@ var stx_player = {
         if (controls.cursors.down.isDown) {
             stx_player.player.body.velocity.y = stx_player.speed;
         }
-        if (stx_player.player.body.x > game.world.width - 230) {
-            stx_player.player.body.x = game.world.width - 230;
+        if (stx_player.player.body.x > game.world.width - 280) {
+            stx_player.player.body.x = game.world.width - 280;
         }
         if (stx_player.player.body.x < 200) {
             stx_player.player.body.x = 200;
         }
-        if (stx_player.player.body.y > game.world.height - 20) {
-            stx_player.player.body.y = game.world.height - 20;
+        if (stx_player.player.body.y > game.world.height - 60) {
+            stx_player.player.body.y = game.world.height - 60;
         }
         if (stx_player.player.body.y < 0) {
             stx_player.player.body.y = 0;
