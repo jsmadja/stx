@@ -45,5 +45,4 @@ var step_gameover = {
          */
     }
 
-
 };

@@ -5,10 +5,11 @@ var step_title = {
     },
 
     start: function () {
-        hud.scoreText.visible = false;
+        stx_player.sprite.visible=false;
         hud.title.content = "Shoot The Xebians";
         hud.title.visible = true;
         step_title.titleChrono = game.time.now;
+        hud.hide();
         currentStep = step_title;
     },
 

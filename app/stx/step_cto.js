@@ -120,13 +120,13 @@ var step_cto = {
     cto1Fires: function () {
         var cto1Bullet = step_cto.bullets.getFirstExists(false);
         cto1Bullet.reset(cto1.sprite.body.x, cto1.sprite.body.y);
-        game.physics.moveToObject(cto1Bullet, stx_player.player, cto1.bullet_speed);
+        game.physics.moveToObject(cto1Bullet, stx_player.sprite, cto1.bullet_speed);
         cto1.firing_timer = game.time.now + cto1.fire_interval;
     },
     cto2Fires: function () {
         var cto2Bullet = step_cto.bullets.getFirstExists(false);
         cto2Bullet.reset(cto2.sprite.body.x, cto2.sprite.body.y);
-        game.physics.moveToObject(cto2Bullet, stx_player.player, cto2.bullet_speed);
+        game.physics.moveToObject(cto2Bullet, stx_player.sprite, cto2.bullet_speed);
         cto2.firing_timer = game.time.now + cto2.fire_interval;
     }
 

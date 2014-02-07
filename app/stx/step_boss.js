@@ -92,7 +92,7 @@ var step_boss = {
     bossFires: function () {
         var bullets = step_boss.bullets.getFirstExists(false);
         bullets.reset(boss.sprite.body.x, boss.sprite.body.y);
-        game.physics.moveToObject(bullets, stx_player.player, boss.bullet_speed);
+        game.physics.moveToObject(bullets, stx_player.sprite, boss.bullet_speed);
         boss.firing_timer = game.time.now + boss.fire_interval;
     }
 };

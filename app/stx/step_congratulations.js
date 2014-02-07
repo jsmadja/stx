@@ -8,7 +8,7 @@ var step_congratulations = {
         hud.stateText.visible = true;
         game.input.keyboard.onDownCallback = step_congratulations.inputName;
         currentStep = step_congratulations;
-        stx_player.player.visible = false;
+        stx_player.sprite.visible = false;
     },
 
     update: function () {

@@ -23,8 +23,9 @@ function create() {
     hud.start();
     stx_player.start();
     //currentStep = step_title;
+    currentStep = step_halloffame;
     //currentStep = step_cto;
-    currentStep = step_boss;
+    //currentStep = step_boss;
     currentStep.start();
 }
 

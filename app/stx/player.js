@@ -4,7 +4,7 @@ var stx_player = {
     bullets: '',
     speed: 300,
     MAX_LIVES: 1,
-    player: null,
+    sprite: null,
     collectedItems:0,
 
     preload: function () {
@@ -24,38 +24,38 @@ var stx_player = {
         stx_player.bullets.setAll('outOfBoundsKill', true);
 
         //  The hero!
-        stx_player.player = game.add.sprite(game.world.centerX, game.world.height - 40, 'ship');
-        stx_player.player.anchor.setTo(0.5, 0.5);
-        stx_player.player.scale.x = 0.5;
-        stx_player.player.scale.y = 0.5;
+        stx_player.sprite = game.add.sprite(game.world.centerX, game.world.height - 40, 'ship');
+        stx_player.sprite.anchor.setTo(0.5, 0.5);
+        stx_player.sprite.scale.x = 0.5;
+        stx_player.sprite.scale.y = 0.5;
     },
 
     update: function () {
         //  Reset the player, then check for movement keys
-        stx_player.player.body.velocity.setTo(0, 0);
+        stx_player.sprite.body.velocity.setTo(0, 0);
         if (controls.cursors.left.isDown) {
-            stx_player.player.body.velocity.x = -stx_player.speed;
+            stx_player.sprite.body.velocity.x = -stx_player.speed;
         }
         if (controls.cursors.right.isDown) {
-            stx_player.player.body.velocity.x = stx_player.speed;
+            stx_player.sprite.body.velocity.x = stx_player.speed;
         }
         if (controls.cursors.up.isDown) {
-            stx_player.player.body.velocity.y = -stx_player.speed;
+            stx_player.sprite.body.velocity.y = -stx_player.speed;
         }
         if (controls.cursors.down.isDown) {
-            stx_player.player.body.velocity.y = stx_player.speed;
+            stx_player.sprite.body.velocity.y = stx_player.speed;
         }
-        if (stx_player.player.body.x > game.world.width - 280) {
-            stx_player.player.body.x = game.world.width - 280;
+        if (stx_player.sprite.body.x > game.world.width - 280) {
+            stx_player.sprite.body.x = game.world.width - 280;
         }
-        if (stx_player.player.body.x < 200) {
-            stx_player.player.body.x = 200;
+        if (stx_player.sprite.body.x < 200) {
+            stx_player.sprite.body.x = 200;
         }
-        if (stx_player.player.body.y > game.world.height - 60) {
-            stx_player.player.body.y = game.world.height - 60;
+        if (stx_player.sprite.body.y > game.world.height - 60) {
+            stx_player.sprite.body.y = game.world.height - 60;
         }
-        if (stx_player.player.body.y < 0) {
-            stx_player.player.body.y = 0;
+        if (stx_player.sprite.body.y < 0) {
+            stx_player.sprite.body.y = 0;
         }
 
         //  Firing?
@@ -80,7 +80,7 @@ var stx_player = {
 
         //  And create an explosion :)
         var explosion = effects.explosions.getFirstDead();
-        explosion.reset(stx_player.player.body.x, stx_player.player.body.y);
+        explosion.reset(stx_player.sprite.body.x, stx_player.sprite.body.y);
         explosion.play('kaboom', 30, false, true);
 
         // When the player dies
@@ -96,11 +96,14 @@ var stx_player = {
             bullet = stx_player.bullets.getFirstExists(false);
             if (bullet) {
                 //  And fire it
-                bullet.reset(stx_player.player.x, stx_player.player.y + 8);
+                bullet.reset(stx_player.sprite.x, stx_player.sprite.y + 8);
                 bullet.body.velocity.y = -400;
                 stx_player.bulletTime = game.time.now + 200;
             }
         }
+    },
+    hide: function() {
+        stx_player.sprite.visible = false;
     }
 
 };
