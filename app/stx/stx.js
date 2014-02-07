@@ -20,8 +20,11 @@ function create() {
     controls.start();
     background.start();
     hud.start();
-    step_title.start();
-    currentStep = step_title;
+    stx_player.start();
+    //currentStep = step_title;
+    //currentStep = step_cto;
+    currentStep = step_boss;
+    currentStep.start();
 }
 
 function update() {

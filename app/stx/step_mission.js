@@ -49,7 +49,6 @@ var step_mission = {
 
         step_mission.aliens.x = 100;
         step_mission.aliens.y = 50;
-        step_mission.enemyBullets.setAll('outOfBoundsKill', true);
         currentStep = step_mission;
 
         //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
@@ -62,7 +61,7 @@ var step_mission = {
     update: function () {
         stx_player.update();
         background.update();
-        if (game.time.now > step_mission.firingTimer) {
+        if (game.time.now > step_mission.firing_timer) {
             step_mission.enemyFires();
         }
         game.physics.collide(stx_player.bullets, step_mission.aliens, step_mission.collisionHandler, null, this);
@@ -130,7 +129,7 @@ var step_mission = {
             step_mission.enemyBullet.reset(shooter.body.x, shooter.body.y);
 
             game.physics.moveToObject(step_mission.enemyBullet, stx_player.player, 120);
-            step_mission.firingTimer = game.time.now + 2000;
+            step_mission.firing_timer = game.time.now + 2000;
         }
     }
 };
