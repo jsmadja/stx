@@ -83,6 +83,8 @@ var step_cto = {
         step_cto.bullets.setAll('anchor.y', 1);
         step_cto.bullets.setAll('outOfBoundsKill', true);
 
+        hud.drawScanlines();
+
         currentStep = step_cto;
     },
 
@@ -103,6 +105,8 @@ var step_cto = {
         cto1.face.kill();
         cto2.face.kill();
         hud.increaseScore(100000);
+        stx_player.hide();
+        hud.hide();
         step_congratulations.start();
     },
 
@@ -119,13 +123,13 @@ var step_cto = {
 
     cto1Fires: function () {
         var cto1Bullet = step_cto.bullets.getFirstExists(false);
-        cto1Bullet.reset(cto1.sprite.body.x, cto1.sprite.body.y);
+        cto1Bullet.reset(cto1.sprite.body.x + cto1.sprite.body.width / 2, cto1.sprite.body.y + cto1.sprite.body.height);
         game.physics.moveToObject(cto1Bullet, stx_player.sprite, cto1.bullet_speed);
         cto1.firing_timer = game.time.now + cto1.fire_interval;
     },
     cto2Fires: function () {
         var cto2Bullet = step_cto.bullets.getFirstExists(false);
-        cto2Bullet.reset(cto2.sprite.body.x, cto2.sprite.body.y);
+        cto2Bullet.reset(cto2.sprite.body.x + cto2.sprite.body.width / 2, cto2.sprite.body.y + cto2.sprite.body.height);
         game.physics.moveToObject(cto2Bullet, stx_player.sprite, cto2.bullet_speed);
         cto2.firing_timer = game.time.now + cto2.fire_interval;
     }

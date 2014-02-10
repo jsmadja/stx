@@ -7,7 +7,7 @@ var step_mission = {
     enemyBullets: null,
     firingTimer: 0,
     music: null,
-    itemMusic:null,
+    itemMusic: null,
 
     preload: function () {
         game.load.image('enemyBullet', 'assets/games/invaders/enemy-bullet.png');
@@ -18,9 +18,6 @@ var step_mission = {
     },
 
     start: function () {
-        hud.start();
-        stx_player.start();
-
         step_mission.enemyBullets = game.add.group();
         step_mission.enemyBullets.createMultiple(30, 'enemyBullet');
         step_mission.enemyBullets.setAll('anchor.x', 0.5);
@@ -47,24 +44,30 @@ var step_mission = {
 
         step_mission.aliens.x = 100;
         step_mission.aliens.y = 50;
+
+        stx_player.show();
+
+        hud.drawScanlines();
+
         currentStep = step_mission;
     },
 
     update: function () {
-        stx_player.update();
         background.update();
+        stx_player.update();
         if (game.time.now > step_mission.firing_timer) {
             step_mission.enemyFires();
         }
         game.physics.collide(stx_player.bullets, step_mission.aliens, step_mission.collisionHandler, null, this);
         game.physics.collide(step_mission.items, stx_player.sprite, step_mission.itemCollisionHandler, null, this);
         if (step_mission.aliens.countLiving() == 0 && stx_player.collectedItems == 1) {
-            hud.increaseScore(100);
             step_mission.end();
         }
     },
 
     end: function () {
+        step_mission.items.visible = false;
+        hud.hideItems();
         step_mission.music.stop();
         step_boss.start();
     },
@@ -76,12 +79,20 @@ var step_mission = {
         var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
+        if(step_mission.aliens.countLiving() == 0) {
+            hud.colorHowToPlayEnemies();
+        }
     },
 
     itemCollisionHandler: function (player, item) {
         step_mission.itemMusic.play();
         stx_player.collectedItems++;
-        item.kill();
+        item.body.x = game.world.width - item.body.width;
+        item.body.velocity.x = 0;
+        item.body.velocity.y = 0;
+        if(stx_player.collectedItems == hud.MAX_ITEMS) {
+            hud.colorHowToPlayItems();
+        }
     },
 
     enemyFires: function () {

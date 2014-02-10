@@ -23,13 +23,14 @@ function create() {
     hud.start();
     stx_player.start();
     //currentStep = step_title;
-    currentStep = step_halloffame;
-    //currentStep = step_cto;
+    //currentStep = step_halloffame;
+    currentStep = step_mission;
+    ///currentStep = step_cto;
     //currentStep = step_boss;
     currentStep.start();
 }
 
 function update() {
-    currentStep.update();
     hud.update();
+    currentStep.update();
 }

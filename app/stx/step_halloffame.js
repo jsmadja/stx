@@ -31,6 +31,9 @@ var step_halloffame = {
         t = game.time.now + 80;
 
         step_halloffame.hallOfFameChrono = game.time.now;
+
+        hud.drawScanlines();
+
         currentStep = step_halloffame;
     },
 

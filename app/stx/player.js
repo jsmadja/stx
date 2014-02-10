@@ -5,12 +5,14 @@ var stx_player = {
     speed: 300,
     MAX_LIVES: 1,
     sprite: null,
-    collectedItems:0,
+    collectedItems: 0,
+    reactor: null,
+    bullet_speed:1000,
 
     preload: function () {
         game.load.image('bullet', 'assets/games/invaders/bullet.png');
         game.load.image('ship', 'stx_assets/sprites/spiked ship 3. small.png');
-
+        game.load.image('diamond', 'assets/misc/star_particle.png');
     },
 
     start: function () {
@@ -28,10 +30,15 @@ var stx_player = {
         stx_player.sprite.anchor.setTo(0.5, 0.5);
         stx_player.sprite.scale.x = 0.5;
         stx_player.sprite.scale.y = 0.5;
+
+        stx_player.reactor = game.add.emitter(stx_player.sprite.body.x, stx_player.sprite.body.y, 50);
+        stx_player.reactor.makeParticles('diamond');
+        stx_player.reactor.start(false, 200, 10);
+        stx_player.reactor.visible = false;
+        stx_player.reactor.gravity = 10;
     },
 
     update: function () {
-        //  Reset the player, then check for movement keys
         stx_player.sprite.body.velocity.setTo(0, 0);
         if (controls.cursors.left.isDown) {
             stx_player.sprite.body.velocity.x = -stx_player.speed;
@@ -57,6 +64,9 @@ var stx_player = {
         if (stx_player.sprite.body.y < 0) {
             stx_player.sprite.body.y = 0;
         }
+
+        stx_player.reactor.x = stx_player.sprite.body.x + stx_player.sprite.body.width / 2;
+        stx_player.reactor.y = stx_player.sprite.body.y + stx_player.sprite.body.height + 10;
 
         //  Firing?
         if (controls.fireButton.isDown) {
@@ -97,13 +107,17 @@ var stx_player = {
             if (bullet) {
                 //  And fire it
                 bullet.reset(stx_player.sprite.x, stx_player.sprite.y + 8);
-                bullet.body.velocity.y = -400;
+                bullet.body.velocity.y = - stx_player.bullet_speed;
                 stx_player.bulletTime = game.time.now + 200;
             }
         }
     },
-    hide: function() {
+    hide: function () {
         stx_player.sprite.visible = false;
+        stx_player.reactor.visible = false;
+    },
+    show: function () {
+        stx_player.sprite.visible = true;
+        stx_player.reactor.visible = true;
     }
-
 };

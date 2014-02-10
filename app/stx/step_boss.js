@@ -5,7 +5,7 @@ var boss = {
     firing_timer: 0,
     bullet_speed: 250,
     fire_interval: 200,
-    energy: 5,
+    energy: 50,
     decreaseEnergy: function () {
         boss.energy--;
     },
@@ -28,11 +28,10 @@ function createBoss() {
     boss.sprite = step_boss.boss_group.create(0, 0, 'boss');
     boss.sprite.x = 600;
     boss.face = game.add.sprite(game.world.width - 200, 0, 'boss_face');
-
-    game.add.tween(boss.sprite).to({ x: 600 }, 2000, Phaser.Easing.Linear.None)
-        .to({ y: 300 }, 1000, Phaser.Easing.Linear.None)
-        .to({ x: 100 }, 2000, Phaser.Easing.Linear.None)
-        .to({ y: 100 }, 1000, Phaser.Easing.Linear.None)
+    game.add.tween(boss.sprite).to({ x: 700 }, boss.speed, Phaser.Easing.Linear.None)
+        .to({ y: 100 }, cto1.speed, Phaser.Easing.Linear.None)
+        .to({ x: 300 }, cto1.speed, Phaser.Easing.Linear.None)
+        .to({ y: 0 }, cto1.speed, Phaser.Easing.Linear.None)
         .loop()
         .start();
 }
@@ -53,16 +52,18 @@ var step_boss = {
         playMusic();
         showBackground();
         createBoss();
+        hud.showBossInfo();
         step_boss.bullets = game.add.group();
         step_boss.bullets.createMultiple(100, 'bossBullet');
         step_boss.bullets.setAll('anchor.x', 0.5);
         step_boss.bullets.setAll('anchor.y', 1);
         step_boss.bullets.setAll('outOfBoundsKill', true);
-
+        hud.drawScanlines();
         currentStep = step_boss;
     },
 
     update: function () {
+        boss.sprite.body.velocity.setTo(0, 0);
         if (game.time.now > boss.firing_timer) {
             step_boss.bossFires();
         }
@@ -72,6 +73,7 @@ var step_boss = {
     },
 
     end: function () {
+        hud.colorHowToPlayBoss();
         hud.increaseScore(100000);
         boss.face.kill();
         step_cto.start();
