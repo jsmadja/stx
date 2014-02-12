@@ -1,3 +1,8 @@
+var old = 0;
+var MAX_ITEMS = 1;
+var disabled_item_style = { font: "12pt Pirulen", fill: '#555'};
+var enabled_item_style = { font: "12pt Pirulen", fill: '#F00'};
+
 var step_mission = {
 
     aliens: '',
@@ -8,6 +13,13 @@ var step_mission = {
     firingTimer: 0,
     music: null,
     itemMusic: null,
+    enemy_speed: 0,
+    item1: null,
+    item2: null,
+    item3: null,
+    item4: null,
+    item5: null,
+    item6: null,
 
     preload: function () {
         game.load.image('enemyBullet', 'assets/games/invaders/enemy-bullet.png');
@@ -30,15 +42,33 @@ var step_mission = {
         step_mission.music = game.add.audio('mission_music');
         step_mission.itemMusic = game.add.audio('item_music');
 
+        // ITEMS
+        var y = 100;
+        var spacing = 60;
+        step_mission.items_title = game.add.text(game.world.width - 200, y, '      ITEMS', { font: "14pt Pirulen", fill: '#367', align: 'center'});
+
+        step_mission.item1 = game.add.text(game.world.width - 200, y + (spacing * 1), ' KANBAN', disabled_item_style);
+        step_mission.item2 = game.add.text(game.world.width - 200, y + (spacing * 2), ' SCRUM', disabled_item_style);
+        step_mission.item3 = game.add.text(game.world.width - 200, y + (spacing * 3), ' LEAN', disabled_item_style);
+        step_mission.item4 = game.add.text(game.world.width - 200, y + (spacing * 4), ' A3', disabled_item_style);
+        step_mission.item5 = game.add.text(game.world.width - 200, y + (spacing * 5), ' SPRINT', disabled_item_style);
+        step_mission.item6 = game.add.text(game.world.width - 200, y + (spacing * 6), ' RETRO', disabled_item_style);
+
         step_mission.music.play();
 
         var kanban = step_mission.items.create(game.world.centerX, game.world.centerY, 'kanban');
         kanban.anchor.setTo(0.5, 0.5);
 
-        var alien = step_mission.aliens.create(game.world.centerX, 0, 'invader');
-        alien.anchor.setTo(0.5, 0.5);
-        alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-        alien.play('fly');
+        for (var x = 0; x < 10; x++) {
+            var alien = step_mission.aliens.create(game.world.centerX, 0 - (x * 30), 'invader');
+            alien.anchor.setTo(0.5, 0.5);
+            alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+            alien.play('fly');
+            alien.old = game.time.now;
+        }
+
+        //var tween = game.add.tween(step_mission.aliens);
+        //tween.onComplete.add(step_mission.descend, this);
 
         background.starfield.visible = true;
 
@@ -52,9 +82,20 @@ var step_mission = {
         currentStep = step_mission;
     },
 
+    descend: function () {
+        step_mission.aliens.forEach(step_mission.descendAlien, this);
+    },
+    descendAlien: function (alien) {
+        if (game.time.now > (alien.old + 20)) {
+            alien.y += 10;
+        }
+        alien.old = game.time.now;
+    },
+
     update: function () {
         background.update();
         stx_player.update();
+        //step_mission.descend();
         if (game.time.now > step_mission.firing_timer) {
             step_mission.enemyFires();
         }
@@ -67,9 +108,13 @@ var step_mission = {
 
     end: function () {
         step_mission.items.visible = false;
-        hud.hideItems();
+        step_mission.hideItems();
         step_mission.music.stop();
         step_boss.start();
+    },
+
+    hideItems: function () {
+        step_mission.items.visible = false;
     },
 
     collisionHandler: function (bullet, target) {
@@ -79,7 +124,7 @@ var step_mission = {
         var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
-        if(step_mission.aliens.countLiving() == 0) {
+        if (step_mission.aliens.countLiving() == 0) {
             hud.colorHowToPlayEnemies();
         }
     },
@@ -87,10 +132,9 @@ var step_mission = {
     itemCollisionHandler: function (player, item) {
         step_mission.itemMusic.play();
         stx_player.collectedItems++;
-        item.body.x = game.world.width - item.body.width;
-        item.body.velocity.x = 0;
-        item.body.velocity.y = 0;
-        if(stx_player.collectedItems == hud.MAX_ITEMS) {
+        item.visible = false;
+        step_mission.item1.setStyle(enabled_item_style);
+        if (stx_player.collectedItems == MAX_ITEMS) {
             hud.colorHowToPlayItems();
         }
     },

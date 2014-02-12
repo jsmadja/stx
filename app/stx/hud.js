@@ -1,4 +1,4 @@
-var coloredHowToPlay = { font: "12pt Pirulen", fill: '#F00', strokeThickness: 15, align: "center"};
+var coloredHowToPlay = { font: "12pt Pirulen", fill: '#F00'};
 
 var hud = {
     score: 0,
@@ -19,7 +19,6 @@ var hud = {
     insertcoin: '',
     bossInfoText: '',
     hallOfFameText: null,
-    MAX_ITEMS: 1,
 
     borderWidth: 200,
 
@@ -90,15 +89,14 @@ var hud = {
          game.add.text(game.world.width - hud.borderWidth, photoHeight+90, 'DEF: 100.000', {fill: '#fff'});
          */
         // HOW TO PLAY
-        var howtoplay_style = { font: "12pt Pirulen", fill: '#367', strokeThickness: 15, align: "center"};
-        hud.howtoplay = game.add.text(0, 0, '  HOW TO PLAY', howtoplay_style);
-        hud.howtoplay_step1 = game.add.text(0, 100, 'Kill all\n ennemies', howtoplay_style);
-        hud.howtoplay_step2 = game.add.text(0, 200, 'Collect items', howtoplay_style);
-        hud.howtoplay_step3 = game.add.text(0, 280, 'Confront the\n boss', howtoplay_style);
-        hud.howtoplay_step4 = game.add.text(0, 400, 'Confront CTOs', howtoplay_style);
-
-        // ITEMS
-        hud.items = game.add.text(game.world.width - 200, game.world.height / 2, 'KANBAN\nSCRUM\nLEAN\nAAA\nBBB\nCCC', howtoplay_style);
+        var y = 100;
+        var spacing = 60;
+        hud.howtoplay = game.add.text(5, y, 'HOW TO PLAY', { font: "14pt Pirulen", fill: '#367'});
+        var howtoplay_style = { font: "12pt Pirulen", fill: '#555'};
+        hud.howtoplay_step1 = game.add.text(10, y + spacing, ' Kill ennemies', howtoplay_style);
+        hud.howtoplay_step2 = game.add.text(10, y + (spacing * 2), 'Collect items', howtoplay_style);
+        hud.howtoplay_step3 = game.add.text(10, y + (spacing * 3), 'Beat the boss', howtoplay_style);
+        hud.howtoplay_step4 = game.add.text(10, y + (spacing * 4), 'Beat the CTOs', howtoplay_style);
 
     },
 
@@ -130,7 +128,6 @@ var hud = {
         hud.hallOfFameText.visible = false;
 
         hud.hideHowToPlay();
-        hud.hideItems();
     },
     show: function () {
         hud.logo.visible = true;
@@ -142,15 +139,11 @@ var hud = {
         hud.player2.visible = true;
         hud.insertcoin.visible = true;
         hud.hiscoreText.visible = true;
-        hud.items.visible = true;
         hud.showHowToPlay();
 
     },
     showHallOfFameTitle: function () {
         hud.hallOfFameText.visible = true;
-    },
-    hideItems: function () {
-        hud.items.visible = false;
     },
     showBossInfo: function () {
         hud.bossInfoText.visible = true;
