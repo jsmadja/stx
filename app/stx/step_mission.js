@@ -59,7 +59,7 @@ var step_mission = {
         var kanban = step_mission.items.create(game.world.centerX, game.world.centerY, 'kanban');
         kanban.anchor.setTo(0.5, 0.5);
 
-        for (var x = 0; x < 10; x++) {
+        for (var x = 0; x < 1; x++) {
             var alien = step_mission.aliens.create(game.world.centerX, 0 - (x * 30), 'invader');
             alien.anchor.setTo(0.5, 0.5);
             alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
