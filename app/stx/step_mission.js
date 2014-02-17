@@ -1,16 +1,13 @@
-var old = 0;
-var MAX_ITEMS = 1;
+var MAX_ITEMS = 6;
 var disabled_item_style = { font: "12pt Pirulen", fill: '#555'};
 var enabled_item_style = { font: "12pt Pirulen", fill: '#F00'};
 
 var step_mission = {
 
-    aliens: '',
-    enemyBullet: '',
+    aliens1: '',
+    aliens2: '',
+    aliens3: '',
     items: '',
-    music: '',
-    enemyBullets: null,
-    firingTimer: 0,
     music: null,
     itemMusic: null,
     enemy_speed: 0,
@@ -22,22 +19,20 @@ var step_mission = {
     item6: null,
 
     preload: function () {
-        game.load.image('enemyBullet', 'assets/games/invaders/enemy-bullet.png');
-        game.load.spritesheet('invader', 'assets/games/invaders/invader32x32x4.png', 32, 32);
+        game.load.image('invader', 'stx_assets/sprites/player.png');
+
         game.load.image('kanban', 'stx_assets/sprites/items/kanban.png');
+        game.load.image('scrum', 'stx_assets/sprites/items/kanban.png');
+        game.load.image('lean', 'stx_assets/sprites/items/kanban.png');
+        game.load.image('a3', 'stx_assets/sprites/items/kanban.png');
+        game.load.image('sprint', 'stx_assets/sprites/items/kanban.png');
+        game.load.image('retro', 'stx_assets/sprites/items/kanban.png');
+
         game.load.audio('mission_music', 'stx_assets/music/mission.mp3');
         game.load.audio('item_music', 'stx_assets/sound/item_collected.wav');
     },
 
     start: function () {
-        step_mission.enemyBullets = game.add.group();
-        step_mission.enemyBullets.createMultiple(30, 'enemyBullet');
-        step_mission.enemyBullets.setAll('anchor.x', 0.5);
-        step_mission.enemyBullets.setAll('anchor.y', 1);
-        step_mission.enemyBullets.setAll('outOfBoundsKill', true);
-
-        step_mission.aliens = game.add.group();
-
         step_mission.items = game.add.group();
         step_mission.music = game.add.audio('mission_music');
         step_mission.itemMusic = game.add.audio('item_music');
@@ -56,57 +51,106 @@ var step_mission = {
 
         step_mission.music.play();
 
-        var kanban = step_mission.items.create(game.world.centerX, game.world.centerY, 'kanban');
-        kanban.anchor.setTo(0.5, 0.5);
+        step_mission.item1_sprite = step_mission.items.create(200, game.world.centerY - 200, 'kanban');
+        step_mission.item1_sprite.item_menu = step_mission.item1;
 
-        for (var x = 0; x < 1; x++) {
-            var alien = step_mission.aliens.create(game.world.centerX, 0 - (x * 30), 'invader');
-            alien.anchor.setTo(0.5, 0.5);
-            alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-            alien.play('fly');
-            alien.old = game.time.now;
+        step_mission.item2_sprite = step_mission.items.create(game.world.centerX, game.world.centerY - 200, 'scrum');
+        step_mission.item2_sprite.item_menu = step_mission.item2;
+
+        step_mission.item3_sprite = step_mission.items.create(game.world.width - 400, game.world.centerY - 200, 'lean');
+        step_mission.item3_sprite.item_menu = step_mission.item3;
+
+        step_mission.item4_sprite = step_mission.items.create(200, game.world.centerY, 'a3');
+        step_mission.item4_sprite.item_menu = step_mission.item4;
+
+        step_mission.item5_sprite = step_mission.items.create(game.world.centerX, game.world.centerY, 'sprint');
+        step_mission.item5_sprite.item_menu = step_mission.item5;
+
+
+        step_mission.item6_sprite = step_mission.items.create(game.world.width - 400, game.world.centerY, 'retro');
+        step_mission.item6_sprite.item_menu = step_mission.item6;
+
+        step_mission.aliens1 = game.add.group();
+        for (var x = 0; x < 10; x++) {
+            var distance = x * 50;
+            var alien = step_mission.aliens1.create(game.world.centerX, -distance, 'invader');
+            alien.scale.x = 0.3;
+            alien.scale.y = 0.3;
+            alien.distance = distance;
+            alien.speed = 5000;
+            alien.tween = { y: game.world.height + (10 * 30) - distance};
+            var tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
+            tween.onComplete.add(step_mission.again, this);
         }
+        step_mission.aliens1.x = 0;
+        step_mission.aliens1.y = 0;
 
-        //var tween = game.add.tween(step_mission.aliens);
-        //tween.onComplete.add(step_mission.descend, this);
+        step_mission.aliens2 = game.add.group();
+        for (var x = 0; x < 10; x++) {
+            var distance = x * 50;
+            var alien = step_mission.aliens2.create(game.world.centerX, -distance, 'invader');
+            alien.scale.x = 0.3;
+            alien.scale.y = 0.3;
+            alien.distance = distance;
+            alien.speed = 10000;
+            alien.tween = {x: 200 + alien.distance * 2, y: game.world.height + (10 * 30) - alien.distance};
+            var tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
+            tween.onComplete.add(step_mission.again, this);
+        }
+        step_mission.aliens2.x = 0;
+        step_mission.aliens2.y = 0;
+
+        step_mission.aliens3 = game.add.group();
+        for (var x = 0; x < 10; x++) {
+            var distance = x * 50;
+            var alien = step_mission.aliens3.create(game.world.centerX, -distance, 'invader');
+            alien.scale.x = 0.3;
+            alien.scale.y = 0.3;
+            alien.distance = distance;
+            alien.speed = 15000;
+            alien.tween = {x: game.world.width - 200 - alien.distance * 2, y: game.world.height + (10 * 30) - alien.distance};
+            var tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
+            tween.onComplete.add(step_mission.again, this);
+        }
+        step_mission.aliens3.x = 0;
+        step_mission.aliens3.y = 0;
 
         background.starfield.visible = true;
-
-        step_mission.aliens.x = 100;
-        step_mission.aliens.y = 50;
-
         stx_player.show();
-
         hud.drawScanlines();
 
         currentStep = step_mission;
     },
 
-    descend: function () {
-        step_mission.aliens.forEach(step_mission.descendAlien, this);
-    },
-    descendAlien: function (alien) {
-        if (game.time.now > (alien.old + 20)) {
-            alien.y += 10;
-        }
-        alien.old = game.time.now;
+    again: function (alien) {
+        alien.x = game.world.centerX;
+        alien.y = -100 - alien.distance;
+        tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
+        tween.onComplete.add(step_mission.again, this);
     },
 
     update: function () {
         background.update();
         stx_player.update();
-        //step_mission.descend();
-        if (game.time.now > step_mission.firing_timer) {
-            step_mission.enemyFires();
-        }
         game.physics.collide(stx_player.bullets, step_mission.aliens, step_mission.collisionHandler, null, this);
         game.physics.collide(step_mission.items, stx_player.sprite, step_mission.itemCollisionHandler, null, this);
-        if (step_mission.aliens.countLiving() == 0 && stx_player.collectedItems == 1) {
+        if (stx_player.collectedItems == MAX_ITEMS) {
             step_mission.end();
         }
     },
 
     end: function () {
+        step_mission.aliens1.visible = false;
+        step_mission.aliens2.visible = false;
+        step_mission.aliens3.visible = false;
+
+        step_mission.item1.visible = false;
+        step_mission.item2.visible = false;
+        step_mission.item3.visible = false;
+        step_mission.item4.visible = false;
+        step_mission.item5.visible = false;
+        step_mission.item6.visible = false;
+
         step_mission.items.visible = false;
         step_mission.hideItems();
         step_mission.music.stop();
@@ -115,6 +159,7 @@ var step_mission = {
 
     hideItems: function () {
         step_mission.items.visible = false;
+        hud.hideItems();
     },
 
     collisionHandler: function (bullet, target) {
@@ -124,33 +169,15 @@ var step_mission = {
         var explosion = effects.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
-        if (step_mission.aliens.countLiving() == 0) {
-            hud.colorHowToPlayEnemies();
-        }
     },
 
     itemCollisionHandler: function (player, item) {
         step_mission.itemMusic.play();
         stx_player.collectedItems++;
         item.visible = false;
-        step_mission.item1.setStyle(enabled_item_style);
+        item.item_menu.setStyle(enabled_item_style);
         if (stx_player.collectedItems == MAX_ITEMS) {
             hud.colorHowToPlayItems();
-        }
-    },
-
-    enemyFires: function () {
-        step_mission.enemyBullet = step_mission.enemyBullets.getFirstExists(false);
-        var livingEnemies = [];
-        step_mission.aliens.forEachAlive(function (alien) {
-            livingEnemies.push(alien);
-        });
-        if (step_mission.enemyBullet && livingEnemies.length > 0) {
-            var random = game.rnd.integerInRange(0, livingEnemies.length);
-            var shooter = livingEnemies[random];
-            step_mission.enemyBullet.reset(shooter.body.x, shooter.body.y);
-            game.physics.moveToObject(step_mission.enemyBullet, stx_player.sprite, 120);
-            step_mission.firing_timer = game.time.now + 2000;
         }
     }
 };

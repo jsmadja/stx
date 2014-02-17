@@ -71,7 +71,7 @@ var hud = {
 
         // BOSS INFO
         var photoHeight = 266;
-        hud.bossInfoText = game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. CHEVALIER\nAGILE PP\nPOW: 100 KB', { font: "14pt Pirulen", fill: '#fff'});
+        hud.bossInfoText = game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. CHEVALIER', { font: "14pt Pirulen", fill: '#fff'});
         hud.bossEnergyText = game.add.text(game.world.width - hud.borderWidth, photoHeight + 90, '', { font: "14pt Pirulen", fill: '#fff'});
         hud.bossInfoText.visible = false;
         hud.bossEnergyText.visible = false;
@@ -93,10 +93,9 @@ var hud = {
         var spacing = 60;
         hud.howtoplay = game.add.text(5, y, 'HOW TO PLAY', { font: "14pt Pirulen", fill: '#367'});
         var howtoplay_style = { font: "12pt Pirulen", fill: '#555'};
-        hud.howtoplay_step1 = game.add.text(10, y + spacing, ' Kill ennemies', howtoplay_style);
-        hud.howtoplay_step2 = game.add.text(10, y + (spacing * 2), 'Collect items', howtoplay_style);
-        hud.howtoplay_step3 = game.add.text(10, y + (spacing * 3), 'Beat the boss', howtoplay_style);
-        hud.howtoplay_step4 = game.add.text(10, y + (spacing * 4), 'Beat the CTOs', howtoplay_style);
+        hud.howtoplay_step1 = game.add.text(10, y + spacing, ' Collect Items', howtoplay_style);
+        hud.howtoplay_step2 = game.add.text(10, y + (spacing * 2), 'Beat the boss', howtoplay_style);
+        hud.howtoplay_step3 = game.add.text(10, y + (spacing * 3), 'Beat the CTOs', howtoplay_style);
 
     },
 
@@ -110,9 +109,6 @@ var hud = {
 
     },
     update: function () {
-        if (hud.bossEnergy) {
-            hud.bossEnergyText.setText('DEF: ' + hud.bossEnergy);
-        }
     },
     hide: function () {
         hud.logo.visible = false;
@@ -160,26 +156,21 @@ var hud = {
         graphics.endFill();
     },
     colorHowToPlayItems: function () {
-        hud.howtoplay_step2.setStyle(coloredHowToPlay);
-    },
-    colorHowToPlayEnemies: function () {
         hud.howtoplay_step1.setStyle(coloredHowToPlay);
     },
     colorHowToPlayBoss: function () {
-        hud.howtoplay_step3.setStyle(coloredHowToPlay);
+        hud.howtoplay_step2.setStyle(coloredHowToPlay);
     },
     hideHowToPlay: function () {
         hud.howtoplay.visible = false;
         hud.howtoplay_step1.visible = false;
         hud.howtoplay_step2.visible = false;
         hud.howtoplay_step3.visible = false;
-        hud.howtoplay_step4.visible = false;
     },
     showHowToPlay: function () {
         hud.howtoplay.visible = true;
         hud.howtoplay_step1.visible = true;
         hud.howtoplay_step2.visible = true;
         hud.howtoplay_step3.visible = true;
-        hud.howtoplay_step4.visible = true;
     }
 }
