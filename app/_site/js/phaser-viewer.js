@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
-	var dir = $.url().param('d');
-	var file = $.url().param('f');
+	var dir = 'stx';
+	var file = 'stx.js';
 	var title = $.url().param('t');
 
 	document.title = 'phaser - ' + title;
