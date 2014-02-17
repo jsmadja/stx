@@ -9,8 +9,6 @@ var hud = {
     title: '',
     hiscore: "500.000",
     hiscoreText: '',
-    bossEnergyText: null,
-    bossEnergy: null,
     logo: null,
     credits: '',
     howtoplay: '',
@@ -72,9 +70,7 @@ var hud = {
         // BOSS INFO
         var photoHeight = 266;
         hud.bossInfoText = game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. CHEVALIER', { font: "14pt Pirulen", fill: '#fff'});
-        hud.bossEnergyText = game.add.text(game.world.width - hud.borderWidth, photoHeight + 90, '', { font: "14pt Pirulen", fill: '#fff'});
         hud.bossInfoText.visible = false;
-        hud.bossEnergyText.visible = false;
         /*
          // BOSS INFO
          var photoHeight = 170;
@@ -104,10 +100,6 @@ var hud = {
         hud.scoreText.content = value;
     },
 
-    setBossEnergy: function (value) {
-        hud.bossEnergy = value;
-
-    },
     update: function () {
     },
     hide: function () {
@@ -143,7 +135,6 @@ var hud = {
     },
     showBossInfo: function () {
         hud.bossInfoText.visible = true;
-        hud.bossEnergyText.visible = true;
     },
     drawScanlines: function () {
         var graphics = game.add.graphics(0, 0);
@@ -172,5 +163,23 @@ var hud = {
         hud.howtoplay_step1.visible = true;
         hud.howtoplay_step2.visible = true;
         hud.howtoplay_step3.visible = true;
+    },
+    drawLifebar: function (life, y) {
+        var x = game.world.width - 200 + life;
+        var graphics = game.add.graphics(0, 0);
+        graphics.beginFill(0x000000);
+        graphics.lineStyle(20, 0x00FF00, 0.5);
+        graphics.moveTo(game.world.width - 200, y);
+        graphics.lineTo(x, y);
+        graphics.endFill();
+
+        graphics = game.add.graphics(0, 0);
+        graphics.beginFill(0x000000);
+        graphics.lineStyle(20, 0xFF0000, 0.5);
+        graphics.moveTo(x, y);
+        graphics.lineTo(game.world.width, y);
+        graphics.endFill();
+        hud.drawScanlines();
     }
+
 }

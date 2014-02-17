@@ -21,8 +21,8 @@ var background = {
     end: function () {
     },
 
-    increaseSpeedBy2: function () {
-        background.speed *= 20;
+    setSpeed: function (speed) {
+        background.speed = speed;
     }
 
 }

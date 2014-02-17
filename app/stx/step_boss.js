@@ -1,3 +1,5 @@
+var boss_lifebar_y_position = 300;
+
 var boss = {
     speed: 1000,
     sprite: null,
@@ -16,7 +18,7 @@ var boss = {
 
 function showBackground() {
     background.starfield.visible = true;
-    background.increaseSpeedBy2();
+    background.setSpeed(2);
 }
 
 function playMusic() {
@@ -57,29 +59,9 @@ var step_boss = {
         step_boss.bullets = game.add.group();
         step_boss.bullets.createMultiple(100, 'bossBullet');
         step_boss.bullets.setAll('outOfBoundsKill', true);
+        hud.drawLifebar(boss.energy, boss_lifebar_y_position);
         hud.drawScanlines();
-        step_boss.drawLifebar(boss.energy);
         currentStep = step_boss;
-    },
-
-    drawLifebar: function (life) {
-        var y = 300;
-        var x = game.world.width - 200 + life;
-        var graphics = game.add.graphics(0, 0);
-        graphics.beginFill(0x000000);
-        graphics.lineStyle(20, 0x00FF00, 0.5);
-        graphics.moveTo(game.world.width - 200, y);
-        graphics.lineTo(x, y);
-        graphics.endFill();
-
-        graphics = game.add.graphics(0, 0);
-        graphics.beginFill(0x000000);
-        graphics.lineStyle(20, 0xFF0000, 0.5);
-        graphics.moveTo(x, y);
-        graphics.lineTo(game.world.width, y);
-        graphics.endFill();
-
-        hud.drawScanlines();
     },
 
     update: function () {
@@ -93,6 +75,7 @@ var step_boss = {
     },
 
     end: function () {
+        background.visible = false;
         hud.colorHowToPlayBoss();
         hud.increaseScore(100000);
         boss.face.kill();
@@ -103,7 +86,7 @@ var step_boss = {
         hud.increaseScore(1);
         boss.decreaseEnergy();
         hud.setBossEnergy(boss.energy);
-        step_boss.drawLifebar(boss.energy);
+        hud.drawLifebar(boss.energy, 300);
 
         bullet.kill();
         if (boss.isOutOfEnergy()) {

@@ -25,7 +25,7 @@ function create() {
     //currentStep = step_title;
     //currentStep = step_halloffame;
     currentStep = step_mission;
-    ///currentStep = step_cto;
+    //currentStep = step_cto;
     //currentStep = step_boss;
     currentStep.start();
 }

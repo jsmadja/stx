@@ -144,14 +144,6 @@ var step_mission = {
         step_mission.aliens2.visible = false;
         step_mission.aliens3.visible = false;
 
-        step_mission.item1.visible = false;
-        step_mission.item2.visible = false;
-        step_mission.item3.visible = false;
-        step_mission.item4.visible = false;
-        step_mission.item5.visible = false;
-        step_mission.item6.visible = false;
-
-        step_mission.items.visible = false;
         step_mission.hideItems();
         step_mission.music.stop();
         step_boss.start();
@@ -159,7 +151,13 @@ var step_mission = {
 
     hideItems: function () {
         step_mission.items.visible = false;
-        hud.hideItems();
+        step_mission.items.visible = false;
+        step_mission.item1.visible = false;
+        step_mission.item2.visible = false;
+        step_mission.item3.visible = false;
+        step_mission.item4.visible = false;
+        step_mission.item5.visible = false;
+        step_mission.item6.visible = false;
     },
 
     collisionHandler: function (bullet, target) {
