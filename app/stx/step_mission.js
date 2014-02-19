@@ -22,11 +22,11 @@ var step_mission = {
         game.load.image('invader', 'stx_assets/sprites/player.png');
 
         game.load.image('kanban', 'stx_assets/sprites/items/kanban.png');
-        game.load.image('scrum', 'stx_assets/sprites/items/kanban.png');
-        game.load.image('lean', 'stx_assets/sprites/items/kanban.png');
-        game.load.image('a3', 'stx_assets/sprites/items/kanban.png');
-        game.load.image('sprint', 'stx_assets/sprites/items/kanban.png');
-        game.load.image('retro', 'stx_assets/sprites/items/kanban.png');
+        game.load.image('scrum', 'stx_assets/sprites/items/scrum.png');
+        game.load.image('lean', 'stx_assets/sprites/items/lean.png');
+        game.load.image('a3', 'stx_assets/sprites/items/a3.png');
+        game.load.image('sprint', 'stx_assets/sprites/items/sprint.png');
+        game.load.image('retro', 'stx_assets/sprites/items/retro.png');
 
         game.load.audio('mission_music', 'stx_assets/music/mission.mp3');
         game.load.audio('item_music', 'stx_assets/sound/item_collected.wav');
