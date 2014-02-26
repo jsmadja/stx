@@ -1,8 +1,7 @@
-var game = new Phaser.Game(1200, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1200, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
     hud.preload();
-    effects.preload();
     background.preload();
     stx_player.preload();
     step_title.preload();
@@ -17,20 +16,27 @@ function preload() {
 var currentStep;
 
 function create() {
-    effects.start();
+    //game.stage.scale.startFullScreen();
     controls.start();
     background.start();
-    hud.start();
     stx_player.start();
     //currentStep = step_title;
+    currentStep = step_missionselection;
     //currentStep = step_halloffame;
-    currentStep = step_mission;
+    //currentStep = step_mission;
     //currentStep = step_cto;
     //currentStep = step_boss;
+    hud.start();
     currentStep.start();
 }
 
 function update() {
     hud.update();
     currentStep.update();
+}
+
+function render() {
+    if(currentStep.render) {
+        currentStep.render();
+    }
 }

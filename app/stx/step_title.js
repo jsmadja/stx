@@ -10,6 +10,7 @@ var step_title = {
         hud.title.visible = true;
         step_title.titleChrono = game.time.now;
         hud.hide();
+        hud.drawScanlines();
         currentStep = step_title;
     },
 

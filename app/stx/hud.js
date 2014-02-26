@@ -29,7 +29,6 @@ var hud = {
         hud.logo.scale.x = 0.7;
         hud.logo.scale.y = 0.7;
 
-
         hud.scoreText = game.add.text(315, 30, 0, { fontSize: '34px', fill: '#fff' });
         hud.increaseScore(0);
 
@@ -58,7 +57,7 @@ var hud = {
 
         // P2 INSERT COIN
         hud.player2 = game.add.text(game.world.width - (hud.borderWidth * 2), 0, 'PLAYER 2', { font: "20pt Pirulen", fill: '#fff'});
-        hud.insertcoin = game.add.text(game.world.width - (hud.borderWidth * 2) - 20, 30, 'INSERT-COIN', { font: "10pt Pirulen", fill: '#fff'});
+        hud.insertcoin = game.add.text(830, 35, 'INSERT COIN', { font: "10pt Pirulen", fill: '#fff'});
 
         // HI-SCORE
         hud.hiscoreText = game.add.text(game.world.centerX, 0, 'HI-SCORE\n' + hud.hiscore, { font: "14pt Pirulen", fill: '#fff'});
@@ -97,11 +96,12 @@ var hud = {
 
     increaseScore: function (value) {
         hud.score += value;
-        hud.scoreText.content = value;
+        hud.scoreText.content = hud.score;
     },
 
     update: function () {
     },
+
     hide: function () {
         hud.logo.visible = false;
         hud.scoreText.visible = false;

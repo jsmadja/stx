@@ -71,7 +71,7 @@ var step_boss = {
         }
         stx_player.update();
         background.update();
-        game.physics.collide(stx_player.bullets, step_boss.boss_group, step_boss.collisionHandler, null, this);
+        game.physics.collide(stx_player.bullets, step_boss.boss_group, step_boss.enemyBulletcollisionHandler, null, this);
     },
 
     end: function () {
