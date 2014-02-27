@@ -21,11 +21,11 @@ function create() {
     background.start();
     stx_player.start();
     //currentStep = step_title;
-    currentStep = step_missionselection;
+    //currentStep = step_missionselection;
     //currentStep = step_halloffame;
     //currentStep = step_mission;
+    currentStep = step_boss;
     //currentStep = step_cto;
-    //currentStep = step_boss;
     hud.start();
     currentStep.start();
 }

@@ -15,7 +15,6 @@ var hud = {
     player1: '',
     player2: '',
     insertcoin: '',
-    bossInfoText: '',
     hallOfFameText: null,
 
     borderWidth: 200,
@@ -66,10 +65,6 @@ var hud = {
         // CREDITS
         hud.credits = game.add.text(game.world.width - 330, game.world.height - 40, 'CREDIT 0', { font: "14pt Pirulen", fill: '#fff'});
 
-        // BOSS INFO
-        var photoHeight = 266;
-        hud.bossInfoText = game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. CHEVALIER', { font: "14pt Pirulen", fill: '#fff'});
-        hud.bossInfoText.visible = false;
         /*
          // BOSS INFO
          var photoHeight = 170;
@@ -112,7 +107,6 @@ var hud = {
         hud.player2.visible = false;
         hud.insertcoin.visible = false;
         hud.hiscoreText.visible = false;
-        hud.bossInfoText.visible = false;
         hud.hallOfFameText.visible = false;
 
         hud.hideHowToPlay();
@@ -132,9 +126,6 @@ var hud = {
     },
     showHallOfFameTitle: function () {
         hud.hallOfFameText.visible = true;
-    },
-    showBossInfo: function () {
-        hud.bossInfoText.visible = true;
     },
     drawScanlines: function () {
         var graphics = game.add.graphics(0, 0);

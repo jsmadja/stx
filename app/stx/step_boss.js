@@ -1,4 +1,5 @@
-var boss_lifebar_y_position = 300;
+var boss_lifebar_y_position = 330;
+var photoHeight = 290;
 
 var boss = {
     speed: 1000,
@@ -6,7 +7,7 @@ var boss = {
     face: '',
     firing_timer: 0,
     bullet_speed: 250,
-    fire_interval: 200,
+    fire_interval: 150,
     energy: 200,
     decreaseEnergy: function () {
         boss.energy -= 5;
@@ -28,13 +29,14 @@ function playMusic() {
 
 function createBoss() {
     boss.sprite = step_boss.boss_group.create(0, 0, 'boss');
-    boss.sprite.x = 600;
+    boss.sprite.x = game.world.centerX;
+    boss.sprite.y = -1000;
 
-    boss.face = game.add.sprite(game.world.width - 200, 0, 'boss_face');
-    game.add.tween(boss.sprite).to({ x: 700 }, boss.speed, Phaser.Easing.Linear.None)
-        .to({ y: 100 }, cto1.speed, Phaser.Easing.Linear.None)
-        .to({ x: 300 }, cto1.speed, Phaser.Easing.Linear.None)
-        .to({ y: 0 }, cto1.speed, Phaser.Easing.Linear.None)
+    boss.face = game.add.sprite(game.world.width - 200, 0, step_missionselection.selected_mission.boss);
+    game.add.tween(boss.sprite).to({ x: 900 }, boss.speed, Phaser.Easing.Linear.None)
+        .to({ y: 60 }, cto1.speed, Phaser.Easing.Linear.None)
+        .to({ x: 200 }, cto1.speed, Phaser.Easing.Linear.None)
+        .to({ y: 60 }, cto1.speed, Phaser.Easing.Linear.None)
         .loop()
         .start();
 }
@@ -42,20 +44,27 @@ var step_boss = {
 
     boss_group: '',
     music: null,
+    bossInfoText: '',
 
     preload: function () {
         game.load.image('boss', 'stx_assets/sprites/player.png');
-        game.load.image('boss_face', 'stx_assets/sprites/boss_face.png');
         game.load.audio('boss_music', 'stx_assets/music/boss.mp3');
-        game.load.image('bossBullet', 'assets/games/invaders/enemy-bullet.png');
+        game.load.image('bossBullet', 'assets/games/invaders/enemy-pinkbullet.png');
+        for (var i = 0; i < missions.length; i++) {
+            var mission = missions[i];
+            game.load.image(mission.boss, 'stx_assets/sprites/' + mission.sprite);
+        }
     },
 
     start: function () {
+        // BOSS INFO
+        step_boss.bossInfoText = game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. ' + step_missionselection.selected_mission.boss, { font: "14pt Pirulen", fill: '#fff'});
+        step_boss.bossInfoText.visible = true;
+
         step_boss.boss_group = game.add.group();
         playMusic();
         showBackground();
         createBoss();
-        hud.showBossInfo();
         step_boss.bullets = game.add.group();
         step_boss.bullets.createMultiple(100, 'bossBullet');
         step_boss.bullets.setAll('outOfBoundsKill', true);
@@ -79,14 +88,15 @@ var step_boss = {
         hud.colorHowToPlayBoss();
         hud.increaseScore(100000);
         boss.face.kill();
+        step_boss.bossInfoText.visible = false;
         step_cto.start();
     },
 
-    collisionHandler: function (bullet, target) {
-        hud.increaseScore(1);
+    enemyBulletcollisionHandler: function (bullet, target) {
+        hud.increaseScore(100);
         boss.decreaseEnergy();
-        hud.setBossEnergy(boss.energy);
-        hud.drawLifebar(boss.energy, 300);
+        console.log(boss.energy);
+        hud.drawLifebar(boss.energy, boss_lifebar_y_position);
 
         bullet.kill();
         if (boss.isOutOfEnergy()) {
@@ -98,7 +108,7 @@ var step_boss = {
     },
     bossFires: function () {
         var bullets = step_boss.bullets.getFirstExists(false);
-        bullets.reset(boss.sprite.body.x, boss.sprite.body.y);
+        bullets.reset(boss.sprite.body.x + boss.sprite.width / 2, boss.sprite.body.y + boss.sprite.height - 10);
         game.physics.moveToObject(bullets, stx_player.sprite, boss.bullet_speed);
         boss.firing_timer = game.time.now + boss.fire_interval;
     }

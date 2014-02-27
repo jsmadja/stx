@@ -1,50 +1,66 @@
 var missions = [
     {
         name: "Agile",
-        description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['A', 'B', 'C', 'D', 'E', 'F']
+        description: "We meet deadlines, we welcome\nchange. All that you believe has been\nredefined. Whatever your estimates,\nknow that you're DONE!",
+        keywords: ['A', 'B', 'C', 'D', 'E', 'F'],
+        sprite: 'agile_face.png',
+        boss: 'CHEVALIER'
     },
     {
         name: "Craftsmanship",
         description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['G', 'H', 'I', 'J', 'K', 'L']
+        keywords: ['G', 'H', 'I', 'J', 'K', 'L'],
+        sprite: 'craftsmanship_face.png',
+        boss: 'VARDANEGA'
     },
     {
         name: "Back",
-        description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['M', 'N', 'O', 'P', 'Q', 'R']
+        description: "We are the metamorphic structure\nof Everything, dictating the Behavior\nfrom the shadow. Whatever your\nlifeform, you will be integrated.",
+        keywords: ['M', 'N', 'O', 'P', 'Q', 'R'],
+        sprite: 'back_face.png',
+        boss: 'MINH'
     },
     {
         name: "Front",
         description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['S', 'T', 'U', 'V', 'W', '0']
+        keywords: ['S', 'T', 'U', 'V', 'W', '0'],
+        sprite: 'front_face.png',
+        boss: 'ANTOINE'
     },
     {
         name: "DevOps",
         description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['1', '2', '3', '4', '5', '6']
+        keywords: ['1', '2', '3', '4', '5', '6'],
+        sprite: 'devops_face.png',
+        boss: 'RIGAUX'
     },
     {
         name: "Mobile",
         description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['7', '8', '9', 'AA', 'BB', 'CC']
+        keywords: ['7', '8', '9', 'AA', 'BB', 'CC'],
+        sprite: 'mobile_face.png',
+        boss: 'THENOZ'
     },
     {
         name: "Cloud",
-        description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['DD', 'EE', 'FF', 'GG', 'HH', 'II']
+        description: "I CAN HAS ME VIRTUAL CHEEZ MACHINEZ\nAN LOAD BALANCERS IN DA CLOUD ?",
+        keywords: ['DD', 'EE', 'FF', 'GG', 'HH', 'II'],
+        sprite: 'cloud_face.png',
+        boss: 'BLONDE'
     },
     {
         name: "Data",
-        description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['KK', 'LL', 'MM', 'NN', 'OO', 'PP']
+        description: "All your datas are belong to us.\nYou are on the way to destruction.\nFight for great justice.",
+        keywords: ['KK', 'LL', 'MM', 'NN', 'OO', 'PP'],
+        sprite: 'data_face.png',
+        boss: 'LARDEUR'
     }
 ];
 
 var step_missionselection = {
-        title:null,
+        title: null,
         selected_mission_index: 0,
-        selected_mission: missions[0],
+        selected_mission: missions[1],
         music: null,
         preload: function () {
             game.load.audio('mission_select_music', 'stx_assets/music/mission_select.mp3');
@@ -56,20 +72,21 @@ var step_missionselection = {
 
             var title_style = { font: "30pt Pirulen", fill: '#fff'};
             var name_style = { font: "20pt Pirulen", fill: '#fff'};
-            var description_style = { font: "12pt Pirulen", fill: '#fff'};
+            var description_style = { font: "11pt Pirulen", fill: '#fff'};
 
             title = game.add.text(300, 30, 'Choose your mission', title_style);
 
+            var spacing_between_fundations = 130;
             for (i = 0; i <= (missions.length / 2) - 1; i++) {
                 var mission = missions[i];
-                mission.name_text = game.add.text(200, 120 + (i * 100), mission.name, name_style);
-                mission.description_text = game.add.text(150, 120 + (i * 100) + 40, mission.description, description_style);
+                mission.name_text = game.add.text(200, 100 + (i * spacing_between_fundations), mission.name, name_style);
+                mission.description_text = game.add.text(150, 100 + (i * spacing_between_fundations) + 40, mission.description, description_style);
             }
 
             for (i = (missions.length / 2); i < missions.length; i++) {
                 var mission = missions[i];
-                mission.name_text = game.add.text(700, 120 + ((i - missions.length / 2) * 100), mission.name, name_style);
-                mission.description_text = game.add.text(650, 120 + ((i - missions.length / 2) * 100) + 40, mission.description, description_style);
+                mission.name_text = game.add.text(700, 100 + ((i - missions.length / 2) * spacing_between_fundations), mission.name, name_style);
+                mission.description_text = game.add.text(650, 100 + ((i - missions.length / 2) * spacing_between_fundations) + 40, mission.description, description_style);
             }
 
             this.selectMission(this.selected_mission);
@@ -116,12 +133,12 @@ var step_missionselection = {
 
         selectMission: function (mission) {
             var unselected_name_style = { font: "20pt Pirulen", fill: '#FFF'};
-            var unselected_description_style = { font: "12pt Pirulen", fill: '#FFF'};
+            var unselected_description_style = { font: "11pt Pirulen", fill: '#FFF'};
             this.selected_mission.name_text.setStyle(unselected_name_style);
             this.selected_mission.description_text.setStyle(unselected_description_style);
 
             var selected_name_style = { font: "20pt Pirulen", fill: '#F00'};
-            var selected_description_style = { font: "12pt Pirulen", fill: '#F00'};
+            var selected_description_style = { font: "11pt Pirulen", fill: '#F00'};
             this.selected_mission = mission;
             this.selected_mission.name_text.setStyle(selected_name_style);
             this.selected_mission.description_text.setStyle(selected_description_style);
@@ -133,6 +150,7 @@ var step_missionselection = {
         },
 
         end: function () {
+            game.input.keyboard.onDownCallback = null;
             title.visible = false;
             for (var i = 0; i < missions.length; i++) {
                 missions[i].name_text.visible = false;
