@@ -9,6 +9,8 @@ var background = {
     },
 
     start: function () {
+        console.log("background.start");
+
         background.speed = 1;
         background.starfield = game.add.tileSprite(200, 0, 800, 600, 'starfield');
         background.starfield.visible = false;
@@ -19,10 +21,15 @@ var background = {
     },
 
     end: function () {
+        console.log("background.end");
     },
 
     setSpeed: function (speed) {
         background.speed = speed;
+    },
+
+    hide: function() {
+        background.starfield.visible = false;
     }
 
 }

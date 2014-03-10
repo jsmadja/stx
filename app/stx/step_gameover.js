@@ -7,17 +7,17 @@ var step_gameover = {
     },
 
     start: function () {
-        player.kill();
-        enemyBullets.callAll('kill');
+        //stx_player.kill();
+        //enemyBullets.callAll('kill');
 
-        stateText.content = " GAME OVER \n Click to restart";
-        stateText.visible = true;
+        //stateText.content = " GAME OVER \n Click to restart";
+        //stateText.visible = true;
 
         step_gameover.music = game.add.audio('gameover_music');
         step_gameover.music.play();
 
         //the "click to restart" handler
-        game.input.onTap.addOnce(restart, this);
+        game.input.onTap.addOnce(step_gameover.restart, this);
     },
 
     update: function () {

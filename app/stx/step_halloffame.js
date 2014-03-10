@@ -19,6 +19,8 @@ var step_halloffame = {
     },
 
     start: function () {
+        console.log("halloffame.start");
+
         hud.hide();
         hud.showHallOfFameTitle();
         stx_player.hide();
@@ -47,18 +49,19 @@ var step_halloffame = {
             step_halloffame.end();
             step_title.start();
         }
-        game.input.onTap.addOnce(step_halloffame.startGame, this);
+        game.input.onTap.addOnce(step_halloffame.end, this);
     },
 
     end: function () {
+        console.log("halloffame.end");
+
         if (step_gameover.music && step_gameover.music.isPlaying) {
             step_gameover.music.stop();
         }
-        hud.title.visible = false;
+        hud.hideHallOfFameTitle();
         s.visible = false;
-    },
-    startGame: function () {
-        step_halloffame.end();
+
+        currentStep = step_missionselection;
         step_missionselection.start();
     }
 };

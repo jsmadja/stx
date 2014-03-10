@@ -10,6 +10,7 @@ function preload() {
     step_boss.preload();
     step_cto.preload();
     step_gameover.preload();
+    step_tryagain.preload();
     step_halloffame.preload();
 }
 
@@ -19,12 +20,11 @@ function create() {
     //game.stage.scale.startFullScreen();
     controls.start();
     background.start();
-    stx_player.start();
-    //currentStep = step_title;
+    currentStep = step_title;
     //currentStep = step_missionselection;
     //currentStep = step_halloffame;
     //currentStep = step_mission;
-    currentStep = step_boss;
+    //currentStep = step_boss;
     //currentStep = step_cto;
     hud.start();
     currentStep.start();

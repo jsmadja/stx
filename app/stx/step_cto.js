@@ -1,5 +1,5 @@
 var cto1_lifebar_y_position = 300;
-var cto2_lifebar_y_position = 550;
+var cto2_lifebar_y_position = 570;
 
 
 function showBackground() {
@@ -13,7 +13,7 @@ var cto1 = {
     face: '',
     firing_timer: 0,
     bullet_speed: 250,
-    fire_interval: 200,
+    fire_interval: 500,
     energy: 200,
     decreaseEnergy: function () {
         cto1.energy -= 5;
@@ -31,7 +31,7 @@ var cto2 = {
     cto_group2: '',
     firing_timer: 0,
     bullet_speed: 250,
-    fire_interval: 200,
+    fire_interval: 500,
     energy: 200,
     decreaseEnergy: function () {
         cto2.energy -= 5;
@@ -83,10 +83,13 @@ var step_cto = {
         game.load.spritesheet('cto2', 'stx_assets/sprites/ship5.png', 366, 304);
         game.load.image('cto1_face', 'stx_assets/sprites/cto1_face.png', 200, 266);
         game.load.image('cto2_face', 'stx_assets/sprites/cto2_face.png', 200, 266);
-        game.load.image('ctoBullet', 'assets/games/invaders/enemy-bullet.png');
+        game.load.image('ctoBullet1', 'assets/games/invaders/enemy-redbullet.png');
+        game.load.image('ctoBullet2', 'assets/games/invaders/enemy-greenbullet.png');
     },
 
     start: function () {
+        console.log("cto.start");
+
         step_cto.firing_timer = game.time.now;
         step_cto.cto_group1 = game.add.group();
         step_cto.cto_group1.x = 100;
@@ -101,11 +104,17 @@ var step_cto = {
         createCTO1();
         createCTO2();
 
-        step_cto.bullets = game.add.group();
-        step_cto.bullets.createMultiple(100, 'ctoBullet');
-        step_cto.bullets.setAll('anchor.x', 0.5);
-        step_cto.bullets.setAll('anchor.y', 1);
-        step_cto.bullets.setAll('outOfBoundsKill', true);
+        step_cto.bullets1 = game.add.group();
+        step_cto.bullets1.createMultiple(100, 'ctoBullet1');
+        step_cto.bullets1.setAll('anchor.x', 0.5);
+        step_cto.bullets1.setAll('anchor.y', 1);
+        step_cto.bullets1.setAll('outOfBoundsKill', true);
+
+        step_cto.bullets2 = game.add.group();
+        step_cto.bullets2.createMultiple(100, 'ctoBullet2');
+        step_cto.bullets2.setAll('anchor.x', 0.5);
+        step_cto.bullets2.setAll('anchor.y', 1);
+        step_cto.bullets2.setAll('outOfBoundsKill', true);
 
         hud.drawLifebar(cto1.energy, cto1_lifebar_y_position);
         hud.drawLifebar(cto2.energy, cto2_lifebar_y_position);
@@ -127,11 +136,16 @@ var step_cto = {
         }
         stx_player.update();
         background.update();
-        game.physics.collide(stx_player.bullets, step_cto.cto_group1, step_cto.collisionHandlerCto1, null, this);
-        game.physics.collide(stx_player.bullets, step_cto.cto_group2, step_cto.collisionHandlerCto2, null, this);
+        game.physics.collide(stx_player.bullets, step_cto.cto_group1, step_cto.playerBullet_VS_cto1_CollisionHandler, null, this);
+        game.physics.collide(stx_player.bullets, step_cto.cto_group2, step_cto.playerBullet_VS_cto2_CollisionHandler, null, this);
+        game.physics.collide(step_cto.bullets1, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
+        game.physics.collide(step_cto.bullets2, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
     },
 
     end: function () {
+        console.log("cto.end");
+
+
         step_boss.music.stop();
         cto1.face.kill();
         cto2.face.kill();
@@ -140,11 +154,11 @@ var step_cto = {
         hud.hide();
 
         var graphics = game.add.graphics(0, 0);
-            graphics.beginFill(0x000000);
-            graphics.lineStyle(20, 0x000000, 1);
-            graphics.moveTo(game.world.width - 200, cto1_lifebar_y_position);
-            graphics.lineTo(game.world.width, cto1_lifebar_y_position);
-            graphics.endFill();
+        graphics.beginFill(0x000000);
+        graphics.lineStyle(20, 0x000000, 1);
+        graphics.moveTo(game.world.width - 200, cto1_lifebar_y_position);
+        graphics.lineTo(game.world.width, cto1_lifebar_y_position);
+        graphics.endFill();
 
         graphics = game.add.graphics(0, 0);
         graphics.beginFill(0x000000);
@@ -155,7 +169,8 @@ var step_cto = {
 
     },
 
-    collisionHandlerCto1: function (bullet, target) {
+    playerBullet_VS_cto1_CollisionHandler: function (playerBullet, target) {
+        hud.increaseScore(100);
         cto1.decreaseEnergy();
         hud.drawLifebar(cto1.energy, cto1_lifebar_y_position);
 
@@ -164,33 +179,41 @@ var step_cto = {
             target.kill();
             hud.increaseScore(100000);
         }
-        if (step_cto.cto_group1.countLiving() === 0 && step_cto.cto_group2.countLiving() === 0 ) {
+        if (step_cto.cto_group1.countLiving() === 0 && step_cto.cto_group2.countLiving() === 0) {
             step_cto.end()
         }
     },
 
-    collisionHandlerCto2: function (bullet, target) {
+    playerBullet_VS_cto2_CollisionHandler: function (playerBullet, target) {
+        hud.increaseScore(100);
         cto2.decreaseEnergy();
         hud.drawLifebar(cto2.energy, cto2_lifebar_y_position);
 
-        bullet.kill();
+        playerBullet.kill();
+
         if (cto2.isOutOfEnergy()) {
             target.kill();
             hud.increaseScore(100000);
         }
-        if (step_cto.cto_group1.countLiving() === 0 && step_cto.cto_group2.countLiving() === 0 ) {
+        if (step_cto.cto_group1.countLiving() === 0 && step_cto.cto_group2.countLiving() === 0) {
             step_cto.end()
         }
     },
 
+    ctoBullet_VS_player_CollisionHandler: function (bullet, player) {
+        player.kill();
+        bullet.kill();
+        step_cto.end();
+    },
+
     cto1Fires: function () {
-        var cto1Bullet = step_cto.bullets.getFirstExists(false);
+        var cto1Bullet = step_cto.bullets1.getFirstExists(false);
         cto1Bullet.reset(cto1.sprite.body.x + cto1.sprite.body.width / 2, cto1.sprite.body.y + cto1.sprite.body.height);
         game.physics.moveToObject(cto1Bullet, stx_player.sprite, cto1.bullet_speed);
         cto1.firing_timer = game.time.now + cto1.fire_interval;
     },
     cto2Fires: function () {
-        var cto2Bullet = step_cto.bullets.getFirstExists(false);
+        var cto2Bullet = step_cto.bullets2.getFirstExists(false);
         cto2Bullet.reset(cto2.sprite.body.x + cto2.sprite.body.width / 2, cto2.sprite.body.y + cto2.sprite.body.height);
         game.physics.moveToObject(cto2Bullet, stx_player.sprite, cto2.bullet_speed);
         cto2.firing_timer = game.time.now + cto2.fire_interval;

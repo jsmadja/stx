@@ -1,4 +1,4 @@
-var MAX_ITEMS = 6;
+var MAX_ITEMS = 1;
 var disabled_item_style = { font: "12pt Pirulen", fill: '#555'};
 var enabled_item_style = { font: "12pt Pirulen", fill: '#F00'};
 
@@ -127,6 +127,8 @@ var step_mission = {
     },
 
     start: function () {
+        console.log("mission.start");
+        stx_player.start();
         step_mission.createExplosions();
         step_mission.createMusic();
         step_mission.createItems();
@@ -139,11 +141,9 @@ var step_mission = {
     },
 
     setupInvader: function (invader) {
-
         invader.anchor.x = 0.5;
         invader.anchor.y = 0.5;
         invader.animations.add('kaboom');
-
     },
 
     again: function (alien) {
@@ -156,30 +156,41 @@ var step_mission = {
     update: function () {
         background.update();
         stx_player.update();
-        game.physics.collide(stx_player.sprite, step_mission.aliens1, step_mission.enemyPlayerCollisionHandler, null, this);
-        game.physics.collide(stx_player.sprite, step_mission.aliens2, step_mission.enemyPlayerCollisionHandler, null, this);
-        game.physics.collide(stx_player.sprite, step_mission.aliens3, step_mission.enemyPlayerCollisionHandler, null, this);
+        game.physics.collide(stx_player.heart, step_mission.aliens1, step_mission.player_VS_enemy_CollisionHandler, null, this);
+        game.physics.collide(stx_player.heart, step_mission.aliens2, step_mission.player_VS_enemy_CollisionHandler, null, this);
+        game.physics.collide(stx_player.heart, step_mission.aliens3, step_mission.player_VS_enemy_CollisionHandler, null, this);
 
-        game.physics.collide(stx_player.bullets, step_mission.aliens1, step_mission.enemyBulletcollisionHandler, null, this);
-        game.physics.collide(stx_player.bullets, step_mission.aliens2, step_mission.enemyBulletcollisionHandler, null, this);
-        game.physics.collide(stx_player.bullets, step_mission.aliens3, step_mission.enemyBulletcollisionHandler, null, this);
+        game.physics.collide(stx_player.bullets, step_mission.aliens1, step_mission.playerBullet_VS_enemy_CollisionHandler, null, this);
+        game.physics.collide(stx_player.bullets, step_mission.aliens2, step_mission.playerBullet_VS_enemy_CollisionHandler, null, this);
+        game.physics.collide(stx_player.bullets, step_mission.aliens3, step_mission.playerBullet_VS_enemy_CollisionHandler, null, this);
 
-        game.physics.collide(step_mission.items, stx_player.sprite, step_mission.itemCollisionHandler, null, this);
+        game.physics.collide(step_mission.items, stx_player.heart, step_mission.plyaer_VS_item_CollisionHandler, null, this);
 
-        if (stx_player.collectedItems == MAX_ITEMS) {
+        if (stx_player.collected_items == MAX_ITEMS) {
             step_mission.end();
         }
 
     },
 
     end: function () {
+        console.log("mission.end");
+
+        if(stx_player.heart.visible) {
+            step_boss.start();
+        } else {
+            step_mission.hideItems();
+            hud.hide();
+            stx_player.hide();
+            step_tryagain.start();
+            background.hide();
+        }
         step_mission.aliens1.visible = false;
         step_mission.aliens2.visible = false;
         step_mission.aliens3.visible = false;
 
+        step_mission.items_title.visible = false;
         step_mission.hideItems();
         step_mission.music.stop();
-        step_boss.start();
     },
 
     hideItems: function () {
@@ -191,37 +202,43 @@ var step_mission = {
         step_mission.item4.visible = false;
         step_mission.item5.visible = false;
         step_mission.item6.visible = false;
+
+        step_mission.item1_sprite.item_menu.visible = false;
+        step_mission.item2_sprite.item_menu.visible = false;
+        step_mission.item3_sprite.item_menu.visible = false;
+        step_mission.item4_sprite.item_menu.visible = false;
+        step_mission.item5_sprite.item_menu.visible = false;
+        step_mission.item6_sprite.item_menu.visible = false;
     },
 
-    enemyBulletcollisionHandler: function (bullet, target) {
-        bullet.kill();
-        target.kill();
+    playerBullet_VS_enemy_CollisionHandler: function (playerBullet, enemy) {
+        playerBullet.kill();
+        enemy.kill();
         hud.increaseScore(500);
         var explosion = step_mission.explosions.getFirstDead();
-        explosion.reset(target.body.x, target.body.y);
+        explosion.reset(enemy.body.x, enemy.body.y);
         explosion.play('kaboom', 30, false, true);
     },
 
-    enemyPlayerCollisionHandler: function (player, target) {
-        target.kill();
+    player_VS_enemy_CollisionHandler: function (player, enemy) {
+        enemy.kill();
         player.kill();
         var explosion = step_mission.explosions.getFirstDead();
-        explosion.reset(target.body.x, target.body.y);
+        explosion.reset(enemy.body.x, enemy.body.y);
         explosion.play('kaboom', 30, false, true);
         step_mission.end();
     },
 
-    itemCollisionHandler: function (player, item) {
+    plyaer_VS_item_CollisionHandler: function (player, item) {
         step_mission.itemMusic.play();
-        stx_player.collectedItems++;
+        stx_player.collected_items++;
         item.visible = false;
         item.item_menu.setStyle(enabled_item_style);
-        if (stx_player.collectedItems == MAX_ITEMS) {
+        if (stx_player.collected_items == MAX_ITEMS) {
             hud.colorHowToPlayItems();
         }
     },
     render: function () {
-        game.debug.renderSpriteInfo(stx_player.sprite.sprite);
-        game.debug.renderSpriteBody(stx_player.sprite.sprite);
+
     }
 };

@@ -24,6 +24,8 @@ var hud = {
     },
 
     start: function () {
+        console.log("hud.start");
+
         hud.logo = game.add.sprite(0, game.world.height - 61, 'logo');
         hud.logo.scale.x = 0.7;
         hud.logo.scale.y = 0.7;
@@ -65,19 +67,6 @@ var hud = {
         // CREDITS
         hud.credits = game.add.text(game.world.width - 330, game.world.height - 40, 'CREDIT 0', { font: "14pt Pirulen", fill: '#fff'});
 
-        /*
-         // BOSS INFO
-         var photoHeight = 170;
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+ game.world.height / 2, 'Cdt LOPEZ', {fill: '#fff'});
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+game.world.height / 2 + 30, 'DATA CTO', {fill: '#fff'});
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+game.world.height / 2 + 60, 'POW: 100 XM', {fill: '#fff'});
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+game.world.height / 2 + 90, 'DEF: 100.000', {fill: '#fff'});
-
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+0, 'Cdt BURET', {fill: '#fff'});
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+30, 'ARCH CTO', {fill: '#fff'});
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+60, 'POW: 100 MD', {fill: '#fff'});
-         game.add.text(game.world.width - hud.borderWidth, photoHeight+90, 'DEF: 100.000', {fill: '#fff'});
-         */
         // HOW TO PLAY
         var y = 100;
         var spacing = 60;
@@ -127,6 +116,9 @@ var hud = {
     showHallOfFameTitle: function () {
         hud.hallOfFameText.visible = true;
     },
+    hideHallOfFameTitle: function () {
+        hud.hallOfFameText.visible = false;
+    },
     drawScanlines: function () {
         var graphics = game.add.graphics(0, 0);
         graphics.beginFill(0x000000);
@@ -169,6 +161,17 @@ var hud = {
         graphics.lineStyle(20, 0xFF0000, 0.5);
         graphics.moveTo(x, y);
         graphics.lineTo(game.world.width, y);
+        graphics.endFill();
+        hud.drawScanlines();
+    },
+
+    hideLifebar: function (y) {
+        var x = game.world.width;
+        var graphics = game.add.graphics(0, 0);
+        graphics.beginFill(0x000000);
+        graphics.lineStyle(20, 0x000000, 1);
+        graphics.moveTo(game.world.width - 200, y);
+        graphics.lineTo(x, y);
         graphics.endFill();
         hud.drawScanlines();
     }
