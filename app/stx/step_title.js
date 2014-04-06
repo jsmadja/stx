@@ -13,6 +13,7 @@ var step_title = {
         hud.hide();
         hud.drawScanlines();
         currentStep = step_title;
+        game.input.onTap.addOnce(step_title.startGame, this);
     },
 
     update: function () {
@@ -20,7 +21,6 @@ var step_title = {
             step_title.end();
             step_halloffame.start();
         }
-        game.input.onTap.addOnce(step_title.startGame, this);
     },
 
     end: function () {
@@ -30,9 +30,11 @@ var step_title = {
     },
 
     startGame: function () {
-        step_title.end();
-        currentStep = step_missionselection;
-        step_missionselection.start();
+        if(currentStep == step_title){
+            step_title.end();
+            currentStep = step_missionselection;
+            step_missionselection.start();
+        }
     }
 
 };

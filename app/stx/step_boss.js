@@ -29,8 +29,7 @@ function playMusic() {
 }
 
 function createBoss() {
-    //boss.energy = 200;
-    boss.energy = 1;
+    boss.energy = 200;
     boss.sprite = step_boss.boss_group.create(0, 0, 'boss');
     boss.sprite.x = game.world.centerX;
     boss.sprite.y = -1000;
@@ -85,6 +84,7 @@ var step_boss = {
         }
         stx_player.update();
         background.update();
+        game.physics.collide(stx_player.sprite, step_boss.boss_group, step_boss.player_VS_enemy_CollisionHandler, null, this);
         game.physics.collide(stx_player.bullets, step_boss.boss_group, step_boss.playerBullet_VS_enemy_CollisionHandler, null, this);
         game.physics.collide(step_boss.bullets, stx_player.heart, step_boss.bossBullet_VS_player_CollisionHandler, null, this);
     },
@@ -110,12 +110,23 @@ var step_boss = {
         step_boss.bossInfoText.visible = false;
     },
 
+    player_VS_enemy_CollisionHandler: function (player, enemy) {
+        enemy.kill();
+        player.kill();
+        step_boss.end();
+    },
+
     playerBullet_VS_enemy_CollisionHandler: function (bullet, target) {
         hud.increaseScore(100);
         boss.decreaseEnergy();
         hud.drawLifebar(boss.energy, boss_lifebar_y_position);
 
         bullet.kill();
+
+        var explosion = step_mission.explosions.getFirstDead();
+        explosion.reset(target.body.x, target.body.y);
+        explosion.play('kaboom', 30, false, true);
+
 
         if (boss.isOutOfEnergy()) {
             target.kill();
@@ -124,11 +135,13 @@ var step_boss = {
             step_boss.end();
         }
     },
+
     bossBullet_VS_player_CollisionHandler: function (bullet, player) {
         player.kill();
         bullet.kill();
         step_boss.end();
     },
+
     bossFires: function () {
         var bullets = step_boss.bullets.getFirstExists(false);
         bullets.reset(boss.sprite.body.x + boss.sprite.width / 2, boss.sprite.body.y + boss.sprite.height - 10);

@@ -70,7 +70,7 @@ var hud = {
         // HOW TO PLAY
         var y = 100;
         var spacing = 60;
-        hud.howtoplay = game.add.text(5, y, 'HOW TO PLAY', { font: "14pt Pirulen", fill: '#367'});
+        hud.howtoplay = game.add.text(5, y, 'HOW TO PLAY', { font: "14pt Pirulen", fill: '#610B5E'});
         var howtoplay_style = { font: "12pt Pirulen", fill: '#555'};
         hud.howtoplay_step1 = game.add.text(10, y + spacing, ' Collect Items', howtoplay_style);
         hud.howtoplay_step2 = game.add.text(10, y + (spacing * 2), 'Beat the boss', howtoplay_style);

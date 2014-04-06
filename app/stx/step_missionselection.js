@@ -137,8 +137,8 @@ var step_missionselection = {
         this.selected_mission.name_text.setStyle(unselected_name_style);
         this.selected_mission.description_text.setStyle(unselected_description_style);
 
-        var selected_name_style = { font: "20pt Pirulen", fill: '#F00'};
-        var selected_description_style = { font: "11pt Pirulen", fill: '#F00'};
+        var selected_name_style = { font: "20pt Pirulen", fill: '#610B5E'};
+        var selected_description_style = { font: "11pt Pirulen", fill: '#610B5E'};
         this.selected_mission = mission;
         this.selected_mission.name_text.setStyle(selected_name_style);
         this.selected_mission.description_text.setStyle(selected_description_style);

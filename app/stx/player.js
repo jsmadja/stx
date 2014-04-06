@@ -76,18 +76,8 @@ var stx_player = {
             stx_player.sprite.body.y = 0;
         }
 
-        if (stx_player.heart.body.x > game.world.width - 250) {
-            stx_player.heart.body.x = game.world.width - 250;
-        }
-        if (stx_player.heart.body.x < (200 + stx_player.sprite.width / 2 - stx_player.heart.width / 2)) {
-            stx_player.heart.body.x = (200 + stx_player.sprite.width / 2 - stx_player.heart.width / 2);
-        }
-        if (stx_player.heart.body.y > game.world.height - 40) {
-            stx_player.heart.body.y = game.world.height - 40;
-        }
-        if (stx_player.heart.body.y < 20) {
-            stx_player.heart.body.y = 20;
-        }
+        stx_player.heart.body.x = stx_player.sprite.body.x+33;
+        stx_player.heart.body.y = stx_player.sprite.body.y + 25;
 
         stx_player.reactor.x = stx_player.sprite.body.x + stx_player.sprite.body.width / 2;
         stx_player.reactor.y = stx_player.sprite.body.y + stx_player.sprite.body.height + 10;
