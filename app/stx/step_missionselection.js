@@ -2,56 +2,56 @@ var missions = [
     {
         name: "Agile",
         description: "We meet deadlines, we welcome\nchange. All that you believe has been\nredefined. Whatever your estimates,\nknow that you're DONE!",
-        keywords: ['A', 'B', 'C', 'D', 'E', 'F'],
+        keywords: ['Scrum', 'Kanban', 'Demo', 'Product', 'Manifesto', 'Lean'],
         sprite: 'agile_face.png',
         boss: 'CHEVALIER'
     },
     {
         name: "Craftsmanship",
-        description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['G', 'H', 'I', 'J', 'K', 'L'],
+        description: "As aspiring Software Craftsmen we are\nraising the bar of professional\nsoftware development by practicing\nit and helping others learn the craft.",
+        keywords: ['YAGNI', 'KISS', 'Refactoring', 'Testing', 'Egoless', 'Cleaning'],
         sprite: 'craftsmanship_face.png',
         boss: 'VARDANEGA'
     },
     {
         name: "Back",
         description: "We are the metamorphic structure\nof Everything, dictating the Behavior\nfrom the shadow. Whatever your\nlifeform is, you will be integrated.",
-        keywords: ['M', 'N', 'O', 'P', 'Q', 'R'],
+        keywords: ['Clustering', 'Architecture', 'Availability', 'Performance', 'Cache', 'Security'],
         sprite: 'back_face.png',
         boss: 'MINH'
     },
     {
         name: "Front",
-        description: "Bla bla bla bla Bla bla bla bla \nBla bla bla bla Bla bla bla bla ",
-        keywords: ['S', 'T', 'U', 'V', 'W', '0'],
+        description: "CSS\nis\nawesome!",
+        keywords: ['Javascript', 'Angular', 'Backbone', 'Ember', 'CSS3', 'HTML5'],
         sprite: 'front_face.png',
         boss: 'ANTOINE'
     },
     {
         name: "DevOps",
         description: "To make error is human. To propagate\nerror to all server in automatic way\nis #devops.",
-        keywords: ['1', '2', '3', '4', '5', '6'],
+        keywords: ['Puppet', 'Chef', 'Docker', 'Cont. Delivery', 'Infra as Code', 'Nagios'],
         sprite: 'devops_face.png',
         boss: 'RIGAUX'
     },
     {
         name: "Mobile",
-        description: "That big thing in my trousers, it's not\nmy d$$$, it's my Samsung Galaxy Note 4!",
-        keywords: ['7', '8', '9', 'AA', 'BB', 'CC'],
+        description: "Conquering the world?\nThere's an app for that!",
+        keywords: ['iOS', 'Android', 'Phonegap', 'APK', 'IPA', 'Emulator'],
         sprite: 'mobile_face.png',
         boss: 'THENOZ'
     },
     {
         name: "Cloud",
         description: "I CAN HAS ME VIRTUAL CHEEZ MACHINEZ\nAN LOAD BALANCERS IN DA CLOUD ?",
-        keywords: ['DD', 'EE', 'FF', 'GG', 'HH', 'II'],
+        keywords: ['Cloudbees', 'EC2', 'AWS', 'OPENSTACK', 'HEROKU', 'OPENSHIFT'],
         sprite: 'cloud_face.png',
         boss: 'BLONDE'
     },
     {
         name: "Data",
         description: "All your datas are belong to us.\nYou are on the way to destruction.\nFight for great justice.",
-        keywords: ['KK', 'LL', 'MM', 'NN', 'OO', 'PP'],
+        keywords: ['Cassandra', 'Hadoop', 'MONGODB', 'NEO4J', 'ELASTIC SEARCH', 'JONGO'],
         sprite: 'data_face.png',
         boss: 'LARDEUR'
     }

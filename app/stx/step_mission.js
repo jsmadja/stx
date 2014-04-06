@@ -1,4 +1,4 @@
-var MAX_ITEMS = 1;
+var MAX_ITEMS = 6;
 var disabled_item_style = { font: "12pt Pirulen", fill: '#555'};
 var enabled_item_style = { font: "12pt Pirulen", fill: '#F00'};
 
@@ -23,12 +23,7 @@ var step_mission = {
         game.load.image('invader', 'stx_assets/sprites/player.png');
         game.load.spritesheet('kaboom', 'assets/games/invaders/explode.png', 128, 128);
 
-        game.load.image('kanban', 'stx_assets/sprites/items/kanban.png');
-        game.load.image('scrum', 'stx_assets/sprites/items/scrum.png');
-        game.load.image('lean', 'stx_assets/sprites/items/lean.png');
-        game.load.image('a3', 'stx_assets/sprites/items/a3.png');
-        game.load.image('sprint', 'stx_assets/sprites/items/sprint.png');
-        game.load.image('retro', 'stx_assets/sprites/items/retro.png');
+        game.load.image('item', 'assets/sprites/diamond.png');
 
         game.load.audio('mission_music', 'stx_assets/music/mission.mp3');
         game.load.audio('item_music', 'stx_assets/sound/item_collected.wav');
@@ -47,23 +42,23 @@ var step_mission = {
         step_mission.item5 = game.add.text(game.world.width - 200, y + (spacing * 5), ' ' + step_missionselection.selected_mission.keywords[4], disabled_item_style);
         step_mission.item6 = game.add.text(game.world.width - 200, y + (spacing * 6), ' ' + step_missionselection.selected_mission.keywords[5], disabled_item_style);
 
-        step_mission.item1_sprite = step_mission.items.create(200, game.world.centerY - 200, 'kanban');
+        step_mission.item1_sprite = step_mission.items.create(300, game.world.centerY - 200, 'item');
         step_mission.item1_sprite.item_menu = step_mission.item1;
 
-        step_mission.item2_sprite = step_mission.items.create(game.world.centerX, game.world.centerY - 200, 'scrum');
+        step_mission.item2_sprite = step_mission.items.create(game.world.centerX, game.world.centerY - 200, 'item');
         step_mission.item2_sprite.item_menu = step_mission.item2;
 
-        step_mission.item3_sprite = step_mission.items.create(game.world.width - 400, game.world.centerY - 200, 'lean');
+        step_mission.item3_sprite = step_mission.items.create(game.world.width - 400, game.world.centerY - 200, 'item');
         step_mission.item3_sprite.item_menu = step_mission.item3;
 
-        step_mission.item4_sprite = step_mission.items.create(200, game.world.centerY, 'a3');
+        step_mission.item4_sprite = step_mission.items.create(300, game.world.centerY, 'item');
         step_mission.item4_sprite.item_menu = step_mission.item4;
 
-        step_mission.item5_sprite = step_mission.items.create(game.world.centerX, game.world.centerY, 'sprint');
+        step_mission.item5_sprite = step_mission.items.create(game.world.centerX, game.world.centerY, 'item');
         step_mission.item5_sprite.item_menu = step_mission.item5;
 
 
-        step_mission.item6_sprite = step_mission.items.create(game.world.width - 400, game.world.centerY, 'retro');
+        step_mission.item6_sprite = step_mission.items.create(game.world.width - 400, game.world.centerY, 'item');
         step_mission.item6_sprite.item_menu = step_mission.item6;
     },
 

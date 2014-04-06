@@ -26,6 +26,7 @@ function create() {
     //currentStep = step_mission;
     //currentStep = step_boss;
     //currentStep = step_cto;
+    //currentStep = step_tryagain;
     hud.start();
     currentStep.start();
 }

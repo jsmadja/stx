@@ -142,14 +142,18 @@ var step_cto = {
         game.physics.collide(step_cto.bullets2, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
     },
 
-    end: function () {
+    end: function (playerKilled) {
         console.log("cto.end");
-
 
         step_boss.music.stop();
         cto1.face.kill();
+        cto1.sprite.kill();
+        hud.hideCTO1Bar();
+
         cto2.face.kill();
-        hud.increaseScore(100000);
+        cto2.sprite.kill();
+        hud.hideCTO2Bar();
+
         stx_player.hide();
         hud.hide();
 
@@ -166,6 +170,13 @@ var step_cto = {
         graphics.moveTo(game.world.width - 200, cto2_lifebar_y_position);
         graphics.lineTo(game.world.width, cto2_lifebar_y_position);
         graphics.endFill();
+
+        if (playerKilled) {
+            step_tryagain.start();
+        } else {
+            hud.increaseScore(100000);
+            step_congratulations.start();
+        }
 
     },
 
@@ -203,7 +214,7 @@ var step_cto = {
     ctoBullet_VS_player_CollisionHandler: function (bullet, player) {
         player.kill();
         bullet.kill();
-        step_cto.end();
+        step_cto.end(true);
     },
 
     cto1Fires: function () {

@@ -96,6 +96,7 @@ var step_boss = {
             step_cto.start();
             hud.colorHowToPlayBoss();
             hud.increaseScore(100000);
+            hud.hideBossBar();
         } else {
             step_mission.hideItems();
             hud.hide();

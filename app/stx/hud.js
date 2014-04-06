@@ -49,7 +49,7 @@ var hud = {
         hud.title.visible = false;
 
         // Hall Of Fame Title
-        hud.hallOfFameText = game.add.text(game.world.centerX, 50, 'Hall Of Fame', { fontSize: '84px', fill: '#fff' });
+        hud.hallOfFameText = game.add.text(game.world.centerX, 50, 'HALL OF FAME', { fontSize: '84px', fill: '#fff' });
         hud.hallOfFameText.anchor.setTo(0.5, 0.5);
         hud.hallOfFameText.visible = false;
 
@@ -170,10 +170,22 @@ var hud = {
         var graphics = game.add.graphics(0, 0);
         graphics.beginFill(0x000000);
         graphics.lineStyle(20, 0x000000, 1);
-        graphics.moveTo(game.world.width - 200, y);
+        graphics.moveTo(game.world.width - 220, y);
         graphics.lineTo(x, y);
         graphics.endFill();
         hud.drawScanlines();
+    },
+
+    hideBossBar: function () {
+        this.hideLifebar(330);
+    },
+
+    hideCTO1Bar: function () {
+        this.hideLifebar(300);
+    },
+
+    hideCTO2Bar: function () {
+        this.hideLifebar(570);
     }
 
 }

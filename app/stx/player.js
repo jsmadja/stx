@@ -113,15 +113,24 @@ var stx_player = {
 
     end: function () {
         console.log("player.end");
-        stx_player.sprite.kill();
-        stx_player.heart.kill();
-        stx_player.reactor.kill();
+        if (stx_player.sprite) {
+            stx_player.sprite.kill();
+        }
+        if (stx_player.heart) {
+            stx_player.heart.kill();
+        }
+        if (stx_player.reactor) {
+            stx_player.reactor.kill();
+        }
     },
 
     hide: function () {
-        stx_player.sprite.visible = false;
-        stx_player.reactor.visible = false;
-        stx_player.heart.visible = false;
+        if (stx_player.sprite)
+            stx_player.sprite.visible = false;
+        if (stx_player.reactor)
+            stx_player.reactor.visible = false;
+        if (stx_player.heart)
+            stx_player.heart.visible = false;
     },
     show: function () {
         stx_player.sprite.visible = true;

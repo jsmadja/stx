@@ -5,11 +5,14 @@ var step_tryagain = {
 
     start: function () {
         console.log("tryagain.start");
+        background.hide();
+        hud.hide();
         hud.stateText.content = " TRY AGAIN, Enter your name!\n\n";
         hud.stateText.visible = true;
         game.input.keyboard.onDownCallback = step_tryagain.inputName;
         currentStep = step_tryagain;
         stx_player.end();
+        hud.drawScanlines();
     },
 
     update: function () {
@@ -24,7 +27,8 @@ var step_tryagain = {
     },
 
     inputName: function (e) {
-        hud.stateText.content += String.fromCharCode(e.keyCode).toLowerCase();
+        var char = keyboard.getKeyFromEvent(e);
+        hud.stateText.content += char.toLowerCase();
         if (e.keyCode == '13' || e.keyCode == 13) {
             step_tryagain.end();
         }
