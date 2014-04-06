@@ -69,6 +69,7 @@ function createCTO2() {
         .loop()
         .start();
 }
+
 function playMusic() {
     if (!step_boss.music || !step_boss.music.isPlaying) {
         step_boss.music = game.add.audio('boss_music');
@@ -105,13 +106,13 @@ var step_cto = {
         createCTO2();
 
         step_cto.bullets1 = game.add.group();
-        step_cto.bullets1.createMultiple(100, 'ctoBullet1');
+        step_cto.bullets1.createMultiple(10, 'ctoBullet1');
         step_cto.bullets1.setAll('anchor.x', 0.5);
         step_cto.bullets1.setAll('anchor.y', 1);
         step_cto.bullets1.setAll('outOfBoundsKill', true);
 
         step_cto.bullets2 = game.add.group();
-        step_cto.bullets2.createMultiple(100, 'ctoBullet2');
+        step_cto.bullets2.createMultiple(10, 'ctoBullet2');
         step_cto.bullets2.setAll('anchor.x', 0.5);
         step_cto.bullets2.setAll('anchor.y', 1);
         step_cto.bullets2.setAll('outOfBoundsKill', true);
@@ -125,24 +126,27 @@ var step_cto = {
     },
 
     update: function () {
-        cto1.sprite.body.velocity.setTo(0, 0);
-        cto2.sprite.body.velocity.setTo(0, 0);
-
-        if (cto1.sprite.alive && (game.time.now > cto1.firing_timer)) {
-            step_cto.cto1Fires();
-        }
-        if (cto2.sprite.alive && (game.time.now > cto2.firing_timer)) {
-            step_cto.cto2Fires();
-        }
         stx_player.update();
         background.update();
 
-        game.physics.collide(stx_player.sprite, step_cto.cto_group1, step_cto.player_VS_enemy_CollisionHandler, null, this);
-        game.physics.collide(stx_player.sprite, step_cto.cto_group2, step_cto.player_VS_enemy_CollisionHandler, null, this);
-        game.physics.collide(stx_player.bullets, step_cto.cto_group1, step_cto.playerBullet_VS_cto1_CollisionHandler, null, this);
-        game.physics.collide(stx_player.bullets, step_cto.cto_group2, step_cto.playerBullet_VS_cto2_CollisionHandler, null, this);
-        game.physics.collide(step_cto.bullets1, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
-        game.physics.collide(step_cto.bullets2, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
+        if (cto1.sprite.alive) {
+            cto1.sprite.body.velocity.setTo(0, 0);
+            if (game.time.now > cto1.firing_timer) {
+                step_cto.cto1Fires();
+            }
+            //game.physics.collide(stx_player.sprite, cto1.sprite, step_cto.player_VS_enemy_CollisionHandler, null, this);
+            game.physics.collide(stx_player.bullets, step_cto.cto_group1, step_cto.playerBullet_VS_cto1_CollisionHandler, null, this);
+            game.physics.collide(step_cto.bullets1, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
+        }
+        if (cto2.sprite.alive) {
+            cto2.sprite.body.velocity.setTo(0, 0);
+            if (game.time.now > cto2.firing_timer) {
+                step_cto.cto2Fires();
+            }
+            //game.physics.collide(stx_player.sprite, cto2.sprite, step_cto.player_VS_enemy_CollisionHandler, null, this);
+            game.physics.collide(stx_player.bullets, step_cto.cto_group2, step_cto.playerBullet_VS_cto2_CollisionHandler, null, this);
+            game.physics.collide(step_cto.bullets2, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
+        }
     },
 
     end: function (playerKilled) {
@@ -174,16 +178,15 @@ var step_cto = {
         graphics.lineTo(game.world.width, cto2_lifebar_y_position);
         graphics.endFill();
 
-        if (playerKilled) {
-            step_tryagain.start();
-        } else {
+        if (!playerKilled) {
             hud.increaseScore(100000);
-            step_congratulations.start();
         }
+        step_tryagain.start();
 
     },
 
     playerBullet_VS_cto1_CollisionHandler: function (playerBullet, target) {
+        console.log('playerBullet_VS_cto1_CollisionHandler');
         hud.increaseScore(100);
         cto1.decreaseEnergy();
         hud.drawLifebar(cto1.energy, cto1_lifebar_y_position);

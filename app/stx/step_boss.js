@@ -60,7 +60,6 @@ var step_boss = {
 
     start: function () {
         console.log("boss.start");
-
         // BOSS INFO
         step_boss.bossInfoText = game.add.text(game.world.width - hud.borderWidth, photoHeight, 'Lt. ' + step_missionselection.selected_mission.boss, { font: "14pt Pirulen", fill: '#fff'});
         step_boss.bossInfoText.visible = true;
@@ -70,7 +69,7 @@ var step_boss = {
         showBackground();
         createBoss();
         step_boss.bullets = game.add.group();
-        step_boss.bullets.createMultiple(100, 'bossBullet');
+        step_boss.bullets.createMultiple(10, 'bossBullet');
         step_boss.bullets.setAll('outOfBoundsKill', true);
         hud.drawLifebar(boss.energy, boss_lifebar_y_position);
         hud.drawScanlines();
@@ -84,7 +83,7 @@ var step_boss = {
         }
         stx_player.update();
         background.update();
-        game.physics.collide(stx_player.sprite, step_boss.boss_group, step_boss.player_VS_enemy_CollisionHandler, null, this);
+        game.physics.collide(stx_player.sprite, boss.sprite, step_boss.player_VS_enemy_CollisionHandler, null, this);
         game.physics.collide(stx_player.bullets, step_boss.boss_group, step_boss.playerBullet_VS_enemy_CollisionHandler, null, this);
         game.physics.collide(step_boss.bullets, stx_player.heart, step_boss.bossBullet_VS_player_CollisionHandler, null, this);
     },
@@ -92,7 +91,7 @@ var step_boss = {
     end: function () {
         console.log("boss.end");
 
-        if(stx_player.heart.visible) {
+        if (stx_player.heart.visible) {
             step_cto.start();
             hud.colorHowToPlayBoss();
             hud.increaseScore(100000);

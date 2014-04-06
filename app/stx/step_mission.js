@@ -152,13 +152,15 @@ var step_mission = {
     },
 
     again: function (alien) {
-        alien.y = -100 - alien.distance;
-        alien.speed -= 200;
-        if (alien.speed <= 1000) {
-            alien.speed = 1000;
+        if (currentStep == step_mission) {
+            alien.y = -100 - alien.distance;
+            alien.speed -= 200;
+            if (alien.speed <= 1000) {
+                alien.speed = 1000;
+            }
+            tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
+            tween.onComplete.add(step_mission.again, this);
         }
-        tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
-        tween.onComplete.add(step_mission.again, this);
     },
 
     update: function () {
@@ -230,6 +232,9 @@ var step_mission = {
     },
 
     player_VS_enemy_CollisionHandler: function (player, enemy) {
+        if (!enemy.visible) {
+            return;
+        }
         enemy.kill();
         player.kill();
         var explosion = step_mission.explosions.getFirstDead();

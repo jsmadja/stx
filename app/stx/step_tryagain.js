@@ -48,22 +48,20 @@ var step_tryagain = {
         if (e.keyCode == 8) {
             if (player_name.length > 0) {
                 hud.stateText.content = hud.stateText.content.substr(0, hud.stateText.content.length - 1);
-                player_name = player_name.substr(0, player_name.length - 1);
-
+                player_name = player_name.substr(0, player_name.length - 1).trim();
             }
             e.preventDefault();
             return;
         }
-
         var char = keyboard.getKeyFromEvent(e);
         if (char == '%') {
             return;
         }
-        if (e.keyCode == '13' || e.keyCode == 13) {
+        if ((e.keyCode == '13' || e.keyCode == 13) && player_name.length > 0) {
             step_tryagain.end();
         } else {
-            hud.stateText.content += char.toLowerCase();
-            player_name += char.toLowerCase();
+            hud.stateText.content += char.toLowerCase().trim();
+            player_name += char.toLowerCase().trim();
         }
     }
 };
