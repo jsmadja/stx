@@ -29,7 +29,7 @@ var missions = [
     },
     {
         name: "DevOps",
-        description: "To make error is human. To propagate\nerror to all server in automatic way\nis #devops.",
+        description: "To make error is human. To propagate\nerror to all servers in automatic way\nis #devops.",
         keywords: ['Puppet', 'Chef', 'Docker', 'Cont. Delivery', 'Infra as Code', 'Nagios'],
         sprite: 'devops_face.png',
         boss: 'RIGAUX'
@@ -43,7 +43,7 @@ var missions = [
     },
     {
         name: "Cloud",
-        description: "I CAN HAS ME VIRTUAL CHEEZ MACHINEZ\nAN LOAD BALANCERS IN DA CLOUD ?",
+        description: "I CAN HAS ME VIRTUAL CHEEZ\nMACHINEZ AN LOAD BALANCERS\nIN DA CLOUD ?",
         keywords: ['Cloudbees', 'EC2', 'AWS', 'OPENSTACK', 'HEROKU', 'OPENSHIFT'],
         sprite: 'cloud_face.png',
         boss: 'BLONDE'
@@ -59,8 +59,9 @@ var missions = [
 
 var step_missionselection = {
     title: null,
-    selected_mission_index: 0,
-    selected_mission: missions[0],
+    description: null,
+    description_title: null,
+    selected_mission: null,
     music: null,
     preload: function () {
         game.load.audio('mission_select_music', 'stx_assets/music/mission_select.mp3');
@@ -68,27 +69,24 @@ var step_missionselection = {
 
     start: function () {
         console.log("missionselection.start");
-
-
+        this.selected_mission_index = new Date().getTime() % 8,
+            this.selected_mission = missions[this.selected_mission_index];
         var title_style = { font: "30pt Pirulen", fill: '#fff'};
+        var description_title_style = { font: "42pt Pirulen", fill: '#fff'};
         var name_style = { font: "20pt Pirulen", fill: '#fff'};
-        var description_style = { font: "11pt Pirulen", fill: '#fff'};
+        var description_style = { font: "30pt Courrier", fill: '#fff'};
 
         title = game.add.text(300, 30, 'Choose your mission', title_style);
 
-        var spacing_between_fundations = 130;
-        for (i = 0; i <= (missions.length / 2) - 1; i++) {
-            var mission = missions[i];
-            mission.name_text = game.add.text(200, 100 + (i * spacing_between_fundations), mission.name, name_style);
-            mission.description_text = game.add.text(150, 100 + (i * spacing_between_fundations) + 40, mission.description, description_style);
-        }
+        this.description_title = game.add.text(500, 120, this.selected_mission.name, description_title_style);
+        this.description = game.add.text(450, 250, this.selected_mission.description, description_style);
 
-        for (i = (missions.length / 2); i < missions.length; i++) {
-            var mission = missions[i];
-            mission.name_text = game.add.text(700, 100 + ((i - missions.length / 2) * spacing_between_fundations), mission.name, name_style);
-            mission.description_text = game.add.text(650, 100 + ((i - missions.length / 2) * spacing_between_fundations) + 40, mission.description, description_style);
-        }
 
+        var spacing_between_fundations = 60;
+        for (i = 0; i < missions.length; i++) {
+            var mission = missions[i];
+            mission.name_text = game.add.text(50, 100 + (i * spacing_between_fundations), mission.name, name_style);
+        }
         this.selectMission(this.selected_mission);
 
         step_missionselection.music = game.add.audio('mission_select_music');
@@ -108,16 +106,6 @@ var step_missionselection = {
             case Phaser.Keyboard.DOWN:
                 step_missionselection.selected_mission_index++;
                 break;
-            case Phaser.Keyboard.LEFT:
-                if (step_missionselection.selected_mission_index >= (missions.length / 2)) {
-                    step_missionselection.selected_mission_index -= missions.length / 2;
-                }
-                break;
-            case Phaser.Keyboard.RIGHT:
-                if (step_missionselection.selected_mission_index < missions.length / 2) {
-                    step_missionselection.selected_mission_index += missions.length / 2;
-                }
-                break;
             case Phaser.Keyboard.ENTER:
                 step_missionselection.end();
                 break;
@@ -135,13 +123,15 @@ var step_missionselection = {
         var unselected_name_style = { font: "20pt Pirulen", fill: '#FFF'};
         var unselected_description_style = { font: "11pt Pirulen", fill: '#FFF'};
         this.selected_mission.name_text.setStyle(unselected_name_style);
-        this.selected_mission.description_text.setStyle(unselected_description_style);
+        //this.selected_mission.description_text.setStyle(unselected_description_style);
 
         var selected_name_style = { font: "20pt Pirulen", fill: '#610B5E'};
         var selected_description_style = { font: "11pt Pirulen", fill: '#610B5E'};
         this.selected_mission = mission;
         this.selected_mission.name_text.setStyle(selected_name_style);
-        this.selected_mission.description_text.setStyle(selected_description_style);
+        this.description_title.setText(mission.name);
+        this.description.setText(mission.description);
+        //this.selected_mission.description_text.setStyle(selected_description_style);
     },
 
     update: function () {
@@ -155,8 +145,10 @@ var step_missionselection = {
         title.visible = false;
         for (var i = 0; i < missions.length; i++) {
             missions[i].name_text.visible = false;
-            missions[i].description_text.visible = false;
+            //missions[i].description_text.visible = false;
         }
+        this.description.visible = false;
+        this.description_title.visible = false;
         step_missionselection.music.stop();
         step_mission.start();
     }
