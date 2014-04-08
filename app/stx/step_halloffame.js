@@ -35,7 +35,7 @@ var step_halloffame = {
         ranking = "";
         t = 0;
         index = 0;
-        $.getJSON("http://shootthexebians.xebiafr.eu.cloudbees.net/api/ranking", function (data) {
+        $.getJSON("http://localhost:8080/api/ranking", function (data) {
             for (var i = 0; i < data.length && i < 10; i++) {
                 var rank = data[i].rank;
                 var name = data[i].player.split('@')[0];
@@ -54,6 +54,7 @@ var step_halloffame = {
         hud.drawScanlines();
         currentStep = step_halloffame;
         game.input.onTap.addOnce(step_halloffame.go, this);
+        game.input.keyboard.onDownCallback = this.keyboardHandler;
     },
 
     update: function () {
@@ -84,5 +85,10 @@ var step_halloffame = {
             currentStep = step_missionselection;
             step_missionselection.start();
         }
+    },
+
+    keyboardHandler: function () {
+        step_halloffame.go();
     }
+
 };

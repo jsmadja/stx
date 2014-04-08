@@ -119,7 +119,7 @@ var step_boss = {
         hud.increaseScore(100);
         boss.decreaseEnergy();
         hud.drawLifebar(boss.energy, boss_lifebar_y_position);
-
+        stx_player.hits++;
         bullet.kill();
 
         var explosion = step_mission.explosions.getFirstDead();

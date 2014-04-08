@@ -6,6 +6,7 @@ var step_title = {
 
     start: function () {
         console.log("title.start");
+        game.stage.scale.startFullScreen();
 
         hud.title.content = "Shoot The Xebians";
         hud.title.visible = true;
@@ -14,6 +15,7 @@ var step_title = {
         hud.drawScanlines();
         currentStep = step_title;
         game.input.onTap.addOnce(step_title.startGame, this);
+        game.input.keyboard.onDownCallback = this.keyboardHandler;
     },
 
     update: function () {
@@ -27,14 +29,19 @@ var step_title = {
         console.log("title.end");
         hud.hide();
         hud.title.visible = false;
+        game.input.keyboard.onDownCallback = null;
     },
 
     startGame: function () {
-        if(currentStep == step_title){
+        if (currentStep == step_title) {
             step_title.end();
             currentStep = step_missionselection;
             step_missionselection.start();
         }
+    },
+
+    keyboardHandler: function () {
+        step_title.startGame();
     }
 
 };

@@ -226,6 +226,7 @@ var step_mission = {
         playerBullet.kill();
         enemy.kill();
         hud.increaseScore(50);
+        stx_player.hits++;
         var explosion = step_mission.explosions.getFirstDead();
         explosion.reset(enemy.body.x, enemy.body.y);
         explosion.play('kaboom', 30, false, true);

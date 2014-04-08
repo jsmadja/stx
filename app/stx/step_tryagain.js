@@ -2,18 +2,48 @@ var player_name = "";
 
 var step_tryagain = {
 
+    elapsedTime: 0,
+    scoreText: null,
+    timeText: null,
+    accuracyText: null,
+    time: null,
+
     preload: function () {
     },
 
     start: function () {
+        currentStep = step_tryagain;
+        this.elapsedTime = new Date(new Date().getTime() - start_time.getTime());
+
         console.log("tryagain.start");
+        console.log("shots:" + stx_player.shots);
         player_name = "";
         background.hide();
         hud.hide();
-        hud.stateText.content = " TRY AGAIN, Enter your name!\n\n";
+        var score = hud.score;
+        var minutes = this.elapsedTime.getMinutes();
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        var seconds = this.elapsedTime.getSeconds();
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        time = minutes + ":" + seconds;
+        var accuracy = parseInt((stx_player.hits / stx_player.shots) * 100) + "%"
+        hud.stateText.content =
+            "\nScore\nTime\nAccuracy\n\n    Enter your name\n\n";
+
+        scoreText = game.add.text(600, 50, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
+        scoreText.content = score;
+        timeText = game.add.text(600, 100, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
+        timeText.content = time;
+        accuracyText = game.add.text(600, 150, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
+        accuracyText.content = accuracy;
+
         hud.stateText.visible = true;
         game.input.keyboard.onDownCallback = step_tryagain.inputName;
-        currentStep = step_tryagain;
         stx_player.end();
         hud.drawScanlines();
     },
@@ -22,14 +52,18 @@ var step_tryagain = {
     },
 
     end: function () {
+        step_boss.music.stop();
+
         console.log("tryagain.end");
         var data = {
-            player: player_name + "@test.com",
+            player: player_name,
             fondation: step_missionselection.selected_mission.name,
-            score: hud.score
+            score: hud.score,
+            accuracy: (parseInt((stx_player.hits / stx_player.shots) * 100) + "%"),
+            chrono: time
         };
         jQuery.ajax({
-            url: 'http://shootthexebians.xebiafr.eu.cloudbees.net/api/scores',
+            url: 'http://localhost:8080/api/scores',
             type: "POST",
             contentType: "application/json",
             dataType: "json",
@@ -38,7 +72,12 @@ var step_tryagain = {
                 game.input.keyboard.onDownCallback = null;
                 hud.stateText.visible = false;
                 hud.stateText.content = "";
+                scoreText.visible = false;
+                timeText.visible = false;
+                accuracyText.visible = false;
+
                 step_halloffame.start();
+
             }
         });
 

@@ -9,6 +9,8 @@ var stx_player = {
     bullets: '',
     sprite: null,
     heart: null,
+    shots: 0,
+    hits: 0,
 
     preload: function () {
         game.load.image('bullet', 'assets/games/invaders/bullet.png');
@@ -21,6 +23,8 @@ var stx_player = {
         console.log("player.start");
 
         stx_player.collected_items = 0;
+        stx_player.shots = 0;
+        stx_player.hits = 0;
 
         stx_player.bullets = game.add.group();
         stx_player.bullets.createMultiple(30, 'bullet');
@@ -76,7 +80,7 @@ var stx_player = {
             stx_player.sprite.body.y = 0;
         }
 
-        stx_player.heart.body.x = stx_player.sprite.body.x+33;
+        stx_player.heart.body.x = stx_player.sprite.body.x + 33;
         stx_player.heart.body.y = stx_player.sprite.body.y + 25;
 
         stx_player.reactor.x = stx_player.sprite.body.x + stx_player.sprite.body.width / 2;
@@ -91,6 +95,7 @@ var stx_player = {
                     bullet.reset(stx_player.sprite.x, stx_player.sprite.y + 8);
                     bullet.body.velocity.y = -stx_player.bullet_speed;
                     stx_player.bullet_time = game.time.now + 200;
+                    stx_player.shots++;
                 }
             }
         }

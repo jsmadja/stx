@@ -68,6 +68,8 @@ var step_missionselection = {
     },
 
     start: function () {
+        game.stage.scale.startFullScreen();
+
         console.log("missionselection.start");
         this.selected_mission_index = new Date().getTime() % 8,
             this.selected_mission = missions[this.selected_mission_index];

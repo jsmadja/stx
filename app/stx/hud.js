@@ -39,7 +39,7 @@ var hud = {
         hud.livesText.visible = false;
 
         //  Text
-        hud.stateText = game.add.text(game.world.centerX, game.world.centerY, '', { font: "30pt Pirulen", fill: '#fff', strokeThickness: 2 });
+        hud.stateText = game.add.text(game.world.centerX, 200, '', { font: "30pt Pirulen", fill: '#fff', strokeThickness: 2 });
         hud.stateText.anchor.setTo(0.5, 0.5);
         hud.stateText.visible = false;
 

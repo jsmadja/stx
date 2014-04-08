@@ -17,7 +17,7 @@ function preload() {
 var currentStep;
 
 function create() {
-    //game.stage.scale.startFullScreen();
+    game.stage.scale.startFullScreen();
     controls.start();
     background.start();
     currentStep = step_title;
@@ -32,8 +32,8 @@ function create() {
 }
 
 function update() {
-    hud.update();
     currentStep.update();
+    hud.update();
 }
 
 function render() {

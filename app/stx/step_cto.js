@@ -190,7 +190,7 @@ var step_cto = {
         hud.increaseScore(100);
         cto1.decreaseEnergy();
         hud.drawLifebar(cto1.energy, cto1_lifebar_y_position);
-
+        stx_player.hits++;
         var explosion = step_mission.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
@@ -209,7 +209,7 @@ var step_cto = {
         hud.increaseScore(100);
         cto2.decreaseEnergy();
         hud.drawLifebar(cto2.energy, cto2_lifebar_y_position);
-
+        stx_player.hits++;
         var explosion = step_mission.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
