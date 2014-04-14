@@ -1,0 +1,6 @@
+mvn tomcat7:run -DMONGOHQ_URL=mongodb://stx:stx@localhost:27017/stx
+
+sudo ./mongod
+
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security
+
