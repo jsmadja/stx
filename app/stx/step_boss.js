@@ -35,6 +35,7 @@ function createBoss() {
     boss.sprite.y = -1000;
 
     boss.face = game.add.sprite(game.world.width - 200, 0, step_missionselection.selected_mission.boss);
+
     game.add.tween(boss.sprite).to({ x: 900 }, boss.speed, Phaser.Easing.Linear.None)
         .to({ y: 60 }, cto1.speed, Phaser.Easing.Linear.None)
         .to({ x: 200 }, cto1.speed, Phaser.Easing.Linear.None)
@@ -68,11 +69,15 @@ var step_boss = {
         playMusic();
         showBackground();
         createBoss();
+
         step_boss.bullets = game.add.group();
         step_boss.bullets.createMultiple(10, 'bossBullet');
         step_boss.bullets.setAll('outOfBoundsKill', true);
+
         hud.drawLifebar(boss.energy, boss_lifebar_y_position);
+
         hud.drawScanlines();
+
         currentStep = step_boss;
     },
 
@@ -103,6 +108,9 @@ var step_boss = {
             step_tryagain.start();
             background.hide();
         }
+        step_boss.boss_group.removeAll();
+        step_boss.bullets.removeAll();
+        game.tweens.removeAll();
         boss.sprite.kill();
         hud.hideLifebar(boss_lifebar_y_position);
         boss.face.kill();
@@ -125,7 +133,6 @@ var step_boss = {
         var explosion = step_mission.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
-
 
         if (boss.isOutOfEnergy()) {
             target.kill();

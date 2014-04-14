@@ -42,6 +42,7 @@ var cto2 = {
 }
 
 function createCTO1() {
+    cto1.energy = 200;
     cto1.sprite = step_cto.cto_group1.create(game.world.centerX + 100, 50, 'cto1');
     cto1.sprite.scale.x = 0.3;
     cto1.sprite.scale.y = 0.3;
@@ -57,6 +58,7 @@ function createCTO1() {
 }
 
 function createCTO2() {
+    cto2.energy = 200;
     cto2.sprite = step_cto.cto_group2.create(game.world.centerX - 100, 50, 'cto2');
     cto2.sprite.scale.x = 0.3;
     cto2.sprite.scale.y = 0.3;
@@ -91,7 +93,6 @@ var step_cto = {
     start: function () {
         console.log("cto.start");
 
-        step_cto.firing_timer = game.time.now;
         step_cto.cto_group1 = game.add.group();
         step_cto.cto_group1.x = 100;
         step_cto.cto_group1.y = 100;
@@ -107,14 +108,10 @@ var step_cto = {
 
         step_cto.bullets1 = game.add.group();
         step_cto.bullets1.createMultiple(10, 'ctoBullet1');
-        step_cto.bullets1.setAll('anchor.x', 0.5);
-        step_cto.bullets1.setAll('anchor.y', 1);
         step_cto.bullets1.setAll('outOfBoundsKill', true);
 
         step_cto.bullets2 = game.add.group();
         step_cto.bullets2.createMultiple(10, 'ctoBullet2');
-        step_cto.bullets2.setAll('anchor.x', 0.5);
-        step_cto.bullets2.setAll('anchor.y', 1);
         step_cto.bullets2.setAll('outOfBoundsKill', true);
 
         hud.drawLifebar(cto1.energy, cto1_lifebar_y_position);
@@ -134,16 +131,14 @@ var step_cto = {
             if (game.time.now > cto1.firing_timer) {
                 step_cto.cto1Fires();
             }
-            //game.physics.collide(stx_player.sprite, cto1.sprite, step_cto.player_VS_enemy_CollisionHandler, null, this);
             game.physics.collide(stx_player.bullets, step_cto.cto_group1, step_cto.playerBullet_VS_cto1_CollisionHandler, null, this);
             game.physics.collide(step_cto.bullets1, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
         }
-        if (cto2.sprite.alive) {
+        if (cto2.sprite && cto2.sprite.alive) {
             cto2.sprite.body.velocity.setTo(0, 0);
             if (game.time.now > cto2.firing_timer) {
                 step_cto.cto2Fires();
             }
-            //game.physics.collide(stx_player.sprite, cto2.sprite, step_cto.player_VS_enemy_CollisionHandler, null, this);
             game.physics.collide(stx_player.bullets, step_cto.cto_group2, step_cto.playerBullet_VS_cto2_CollisionHandler, null, this);
             game.physics.collide(step_cto.bullets2, stx_player.heart, step_cto.ctoBullet_VS_player_CollisionHandler, null, this);
         }
@@ -157,11 +152,14 @@ var step_cto = {
         cto1.sprite.kill();
         hud.hideCTO1Bar();
 
-        cto2.face.kill();
-        cto2.sprite.kill();
+        if(cto2.face) {
+            cto2.face.kill();
+            cto2.sprite.kill();
+        }
         hud.hideCTO2Bar();
 
         stx_player.hide();
+        game.tweens.removeAll();
         hud.hide();
 
         var graphics = game.add.graphics(0, 0);
@@ -181,21 +179,29 @@ var step_cto = {
         if (!playerKilled) {
             hud.increaseScore(100000);
         }
+
+        step_cto.cto_group1.removeAll();
+        step_cto.cto_group2.removeAll();
+        step_cto.bullets1.removeAll();
+        step_cto.bullets2.removeAll();
+
         step_tryagain.start();
 
     },
 
     playerBullet_VS_cto1_CollisionHandler: function (playerBullet, target) {
-        console.log('playerBullet_VS_cto1_CollisionHandler');
+        console.log(game.tweens._tweens.length)
+
         hud.increaseScore(100);
         cto1.decreaseEnergy();
         hud.drawLifebar(cto1.energy, cto1_lifebar_y_position);
         stx_player.hits++;
+        bullet.kill();
+
         var explosion = step_mission.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
 
-        bullet.kill();
         if (cto1.isOutOfEnergy()) {
             target.kill();
             hud.increaseScore(100000);
@@ -210,11 +216,11 @@ var step_cto = {
         cto2.decreaseEnergy();
         hud.drawLifebar(cto2.energy, cto2_lifebar_y_position);
         stx_player.hits++;
+        playerBullet.kill();
+
         var explosion = step_mission.explosions.getFirstDead();
         explosion.reset(target.body.x, target.body.y);
         explosion.play('kaboom', 30, false, true);
-
-        playerBullet.kill();
 
         if (cto2.isOutOfEnergy()) {
             target.kill();

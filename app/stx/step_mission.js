@@ -5,6 +5,7 @@ var start_time;
 
 var step_mission = {
 
+    tween1: null,
     aliens1: '',
     aliens2: '',
     aliens3: '',
@@ -70,6 +71,7 @@ var step_mission = {
 
     createAliens1: function () {
         step_mission.aliens1 = game.add.group();
+        step_mission.aliens1.setAll('outOfBoundsKill', true);
         for (var x = 0; x < 10; x++) {
             var distance = x * 50;
             var alien = step_mission.aliens1.create(game.world.centerX, -distance, 'invader');
@@ -77,9 +79,6 @@ var step_mission = {
             alien.scale.y = 0.3;
             alien.distance = distance;
             alien.speed = 6000;
-            alien.tween = { y: game.world.height + 300 - distance};
-            var tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
-            tween.onComplete.add(step_mission.again, this);
         }
         step_mission.aliens1.x = 0;
         step_mission.aliens1.y = 0;
@@ -94,9 +93,6 @@ var step_mission = {
             alien.scale.y = 0.3;
             alien.distance = distance;
             alien.speed = 4000;
-            alien.tween = { y: game.world.height + 300 - distance};
-            var tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
-            tween.onComplete.add(step_mission.again, this);
         }
         step_mission.aliens2.x = 0;
         step_mission.aliens2.y = 0;
@@ -111,9 +107,6 @@ var step_mission = {
             alien.scale.y = 0.3;
             alien.distance = distance;
             alien.speed = 5000;
-            alien.tween = { y: game.world.height + 300 - distance};
-            var tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
-            tween.onComplete.add(step_mission.again, this);
         }
         step_mission.aliens3.x = 0;
         step_mission.aliens3.y = 0;
@@ -134,7 +127,9 @@ var step_mission = {
     start: function () {
         console.log("mission.start");
         stx_player.start();
-        step_mission.createExplosions();
+        if (!step_mission.explosions) {
+            step_mission.createExplosions();
+        }
         step_mission.createMusic();
         step_mission.createItems();
         background.starfield.visible = true;
@@ -143,6 +138,7 @@ var step_mission = {
         hud.drawScanlines();
         start_time = new Date();
         currentStep = step_mission;
+
     },
 
     setupInvader: function (invader) {
@@ -151,35 +147,31 @@ var step_mission = {
         invader.animations.add('kaboom');
     },
 
-    again: function (alien) {
-        if (currentStep == step_mission) {
-            alien.y = -100 - alien.distance;
-            alien.speed -= 200;
-            if (alien.speed <= 1000) {
-                alien.speed = 1000;
-            }
-            tween = game.add.tween(alien).to(alien.tween, alien.speed).start();
-            tween.onComplete.add(step_mission.again, this);
-        }
-    },
-
     update: function () {
         background.update();
         stx_player.update();
         game.physics.collide(stx_player.heart, step_mission.aliens1, step_mission.player_VS_enemy_CollisionHandler, null, this);
-        game.physics.collide(stx_player.heart, step_mission.aliens2, step_mission.player_VS_enemy_CollisionHandler, null, this);
-        game.physics.collide(stx_player.heart, step_mission.aliens3, step_mission.player_VS_enemy_CollisionHandler, null, this);
-
         game.physics.collide(stx_player.bullets, step_mission.aliens1, step_mission.playerBullet_VS_enemy_CollisionHandler, null, this);
+        game.physics.collide(stx_player.heart, step_mission.aliens2, step_mission.player_VS_enemy_CollisionHandler, null, this);
         game.physics.collide(stx_player.bullets, step_mission.aliens2, step_mission.playerBullet_VS_enemy_CollisionHandler, null, this);
+        game.physics.collide(stx_player.heart, step_mission.aliens3, step_mission.player_VS_enemy_CollisionHandler, null, this);
         game.physics.collide(stx_player.bullets, step_mission.aliens3, step_mission.playerBullet_VS_enemy_CollisionHandler, null, this);
-
         game.physics.collide(step_mission.items, stx_player.sprite, step_mission.player_VS_item_CollisionHandler, null, this);
-
+        var tab = [step_mission.aliens1, step_mission.aliens2, step_mission.aliens3];
+        for (var i = 0; i < tab.length; i++) {
+            var aliens = tab[i];
+            if (aliens) {
+                aliens.forEach(function (alien) {
+                    alien.body.y += 5;
+                    if (alien.body.y > game.world.height) {
+                        alien.body.y = -500;
+                    }
+                });
+            }
+        }
         if (stx_player.collected_items == MAX_ITEMS) {
             step_mission.end();
         }
-
     },
 
     end: function () {
@@ -196,9 +188,14 @@ var step_mission = {
             step_tryagain.start();
             background.hide();
         }
-        step_mission.aliens1.visible = false;
-        step_mission.aliens2.visible = false;
-        step_mission.aliens3.visible = false;
+        if (step_mission.aliens1)
+            step_mission.aliens1.removeAll();
+        if (step_mission.aliens2)
+            step_mission.aliens2.removeAll();
+        if (step_mission.aliens3)
+            step_mission.aliens3.removeAll();
+        step_mission.items.removeAll();
+        game.tweens.removeAll();
 
         step_mission.items_title.visible = false;
         step_mission.hideItems();

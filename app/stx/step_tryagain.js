@@ -33,7 +33,7 @@ var step_tryagain = {
         time = minutes + ":" + seconds;
         var accuracy = parseInt((stx_player.hits / stx_player.shots) * 100) + "%"
         hud.stateText.content =
-            "\nScore\nTime\nAccuracy\n\n    Enter your name\n\n";
+            "\nScore\nTime\nAccuracy\n\n    Enter your email\n\n";
 
         scoreText = game.add.text(600, 50, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
         scoreText.content = score;
@@ -52,7 +52,10 @@ var step_tryagain = {
     },
 
     end: function () {
+        if(step_boss.music) {
         step_boss.music.stop();
+
+        }
 
         console.log("tryagain.end");
         var data = {
@@ -69,6 +72,9 @@ var step_tryagain = {
             dataType: "json",
             data: JSON.stringify(data),
             success: function () {
+
+            }
+        });
                 game.input.keyboard.onDownCallback = null;
                 hud.stateText.visible = false;
                 hud.stateText.content = "";
@@ -77,9 +83,6 @@ var step_tryagain = {
                 accuracyText.visible = false;
 
                 step_halloffame.start();
-
-            }
-        });
 
     },
 
