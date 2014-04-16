@@ -35,7 +35,7 @@ var hud = {
 
         //  Lives
         hud.lives = game.add.group();
-        hud.livesText = game.add.text(0, 10, 'Lives : ', { fontSize: '34px', fill: '#fff' });
+        hud.livesText = game.add.text(0, 10, 'Lives : ', { fontSize: '34pt', fill: '#fff' });
         hud.livesText.visible = false;
 
         //  Text
@@ -44,7 +44,7 @@ var hud = {
         hud.stateText.visible = false;
 
         // Title
-        hud.title = game.add.text(game.world.centerX, game.world.centerY, '', { font: "30pt Pirulen", fill: '#fff', strokeThickness: 2 });
+        hud.title = game.add.text(game.world.centerX, game.world.centerY, '', { font: "54pt Pirulen", fill: '#fff', strokeThickness: 2 });
         hud.title.anchor.setTo(0.5, 0.5);
         hud.title.visible = false;
 
@@ -120,6 +120,7 @@ var hud = {
         hud.hallOfFameText.visible = false;
     },
     drawScanlines: function () {
+        /*
         var graphics = game.add.graphics(0, 0);
         graphics.beginFill(0x000000);
         graphics.lineStyle(1, 0x000000, 0.4);
@@ -128,6 +129,7 @@ var hud = {
             graphics.lineTo(game.world.width, i);
         }
         graphics.endFill();
+        */
     },
     colorHowToPlayItems: function () {
         hud.howtoplay_step1.setStyle(coloredHowToPlay);

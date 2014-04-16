@@ -222,7 +222,7 @@ var step_mission = {
     playerBullet_VS_enemy_CollisionHandler: function (playerBullet, enemy) {
         playerBullet.kill();
         enemy.kill();
-        hud.increaseScore(50);
+        hud.increaseScore(1);
         stx_player.hits++;
         var explosion = step_mission.explosions.getFirstDead();
         explosion.reset(enemy.body.x, enemy.body.y);

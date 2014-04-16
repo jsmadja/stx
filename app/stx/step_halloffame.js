@@ -41,7 +41,7 @@ var step_halloffame = {
                 var name = data[i].player.split('@')[0];
                 var score = data[i].score;
                 var fondation = data[i].fondation;
-                ranking += pad(rank, 2) + ". " + rightpad(name, 20) + " " + pad(score, 10) + " - " + (fondation ? fondation : "") + "\n";
+                ranking += pad(rank, 2) + ". " + rightpad(name, 15) + " " + pad(score, 10) + " - " + rightpad(fondation ? fondation : "", 10) + "\n";
             }
 
         });
@@ -60,7 +60,7 @@ var step_halloffame = {
     update: function () {
         if (game.time.now > t && index < ranking.length) {
             s.setText(ranking.substr(0, index + 1));
-            t = game.time.now + 10;
+            t = game.time.now + 5;
             index++;
         }
         if (game.time.now > (step_halloffame.hallOfFameChrono + 10000)) {

@@ -1,0 +1,11 @@
+fr/xebia/devoxxfr/shootthexebians/config/JerseyConfig.class
+fr/xebia/devoxxfr/shootthexebians/business/scores/ScoresResource.class
+fr/xebia/devoxxfr/shootthexebians/business/rank/RankingResource.class
+fr/xebia/devoxxfr/shootthexebians/config/CORSResponseFilter.class
+fr/xebia/devoxxfr/shootthexebians/common/MongoUnreachableException.class
+fr/xebia/devoxxfr/shootthexebians/config/SpringContextIntializer.class
+fr/xebia/devoxxfr/shootthexebians/config/SpringConfig.class
+fr/xebia/devoxxfr/shootthexebians/business/scores/Score.class
+fr/xebia/devoxxfr/shootthexebians/business/HealthResource.class
+fr/xebia/devoxxfr/shootthexebians/business/rank/Rank.class
+fr/xebia/devoxxfr/shootthexebians/business/CleanDataResource.class

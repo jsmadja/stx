@@ -32,15 +32,19 @@ var step_tryagain = {
 
         time = minutes + ":" + seconds;
         var accuracy = parseInt((stx_player.hits / stx_player.shots) * 100) + "%"
+        if (stx_player.shots == 0) {
+            accuracy = "0%";
+        }
+
         hud.stateText.content =
             "\nScore\nTime\nAccuracy\n\n    Enter your email\n\n";
 
-        scoreText = game.add.text(600, 50, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
-        scoreText.content = score;
-        timeText = game.add.text(600, 100, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
-        timeText.content = time;
-        accuracyText = game.add.text(600, 150, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
-        accuracyText.content = accuracy;
+        step_tryagain.scoreText = game.add.text(600, 50, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
+        step_tryagain.scoreText.content = score;
+        step_tryagain.timeText = game.add.text(600, 100, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
+        step_tryagain.timeText.content = time;
+        step_tryagain.accuracyText = game.add.text(600, 150, 0, { font: "30pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
+        step_tryagain.accuracyText.content = accuracy;
 
         hud.stateText.visible = true;
         game.input.keyboard.onDownCallback = step_tryagain.inputName;
@@ -52,9 +56,12 @@ var step_tryagain = {
     },
 
     end: function () {
-        if(step_boss.music) {
-        step_boss.music.stop();
+        step_tryagain.scoreText.visible = false;
+        step_tryagain.timeText.visible = false;
+        step_tryagain.accuracyText.visible = false;
 
+        if (step_boss.music) {
+            step_boss.music.stop();
         }
 
         console.log("tryagain.end");
@@ -75,15 +82,14 @@ var step_tryagain = {
 
             }
         });
-                game.input.keyboard.onDownCallback = null;
-                hud.stateText.visible = false;
-                hud.stateText.content = "";
-                scoreText.visible = false;
-                timeText.visible = false;
-                accuracyText.visible = false;
+        game.input.keyboard.onDownCallback = null;
+        hud.stateText.visible = false;
+        hud.stateText.content = "";
+        step_tryagain.scoreText.visible = false;
+        step_tryagain.timeText.visible = false;
+        step_tryagain.accuracyText.visible = false;
 
-                step_halloffame.start();
-
+        step_halloffame.start();
     },
 
     inputName: function (e) {
@@ -95,13 +101,13 @@ var step_tryagain = {
             e.preventDefault();
             return;
         }
-        var char = keyboard.getKeyFromEvent(e);
-        if (char == '%') {
-            return;
-        }
         if ((e.keyCode == '13' || e.keyCode == 13) && player_name.length > 0) {
             step_tryagain.end();
         } else {
+            var char = keyboard.getKeyFromEvent(e);
+            if (char.match("[.@a-zA-Z\u00C0-\u017F]") != char) {
+                return;
+            }
             hud.stateText.content += char.toLowerCase().trim();
             player_name += char.toLowerCase().trim();
         }

@@ -23,7 +23,7 @@ public class RankingResource {
     @GET
     public List<Rank> buildRanking() {
         Iterable<Rank> sortedRanks = scoresCollection.find().sort("{score: -1}").as(Rank.class);
-        List<Rank> ranking = new ArrayList<>();
+        List<Rank> ranking = new ArrayList<Rank>();
         Long index = 1L;
         for (Rank rank : sortedRanks) {
             rank.setRank(index++);

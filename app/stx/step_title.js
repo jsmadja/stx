@@ -7,7 +7,6 @@ var step_title = {
     start: function () {
         console.log("title.start");
         game.stage.scale.startFullScreen();
-
         hud.title.content = "Shoot The Xebians";
         hud.title.visible = true;
         step_title.titleChrono = game.time.now;
@@ -19,9 +18,9 @@ var step_title = {
     },
 
     update: function () {
-        if (currentStep === this && game.time.now > (step_title.titleChrono + 10000)) {
+        if (currentStep === this && game.time.now > (step_title.titleChrono + 3000)) {
             step_title.end();
-            step_halloffame.start();
+            step_greatplacetowork.start();
         }
     },
 
@@ -40,8 +39,12 @@ var step_title = {
         }
     },
 
-    keyboardHandler: function () {
-        step_title.startGame();
+    keyboardHandler: function (e) {
+        if(e.keyCode == 70) {
+            game.stage.scale.startFullScreen();
+        } else {
+            step_title.startGame();
+        }
     }
 
 };

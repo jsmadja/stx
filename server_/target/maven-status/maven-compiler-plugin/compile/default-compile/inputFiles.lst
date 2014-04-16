@@ -1,0 +1,11 @@
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/business/scores/Score.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/common/MongoUnreachableException.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/business/HealthResource.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/business/scores/ScoresResource.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/config/JerseyConfig.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/config/SpringContextIntializer.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/business/rank/RankingResource.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/config/CORSResponseFilter.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/config/SpringConfig.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/business/CleanDataResource.java
+/Users/jsmadja/Development/shoot-the-xebians/server_/src/main/java/fr/xebia/devoxxfr/shootthexebians/business/rank/Rank.java
