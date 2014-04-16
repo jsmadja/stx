@@ -135,10 +135,8 @@ var step_mission = {
         background.starfield.visible = true;
         stx_player.show();
         hud.show();
-        hud.drawScanlines();
         start_time = new Date();
         currentStep = step_mission;
-
     },
 
     setupInvader: function (invader) {

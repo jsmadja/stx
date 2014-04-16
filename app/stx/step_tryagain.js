@@ -49,7 +49,6 @@ var step_tryagain = {
         hud.stateText.visible = true;
         game.input.keyboard.onDownCallback = step_tryagain.inputName;
         stx_player.end();
-        hud.drawScanlines();
     },
 
     update: function () {

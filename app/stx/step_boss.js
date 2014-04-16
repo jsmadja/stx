@@ -76,8 +76,6 @@ var step_boss = {
 
         hud.drawLifebar(boss.energy, boss_lifebar_y_position);
 
-        hud.drawScanlines();
-
         currentStep = step_boss;
     },
 

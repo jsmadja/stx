@@ -8,10 +8,7 @@ var step_greatplacetowork = {
         step_greatplacetowork.titleChrono = game.time.now;
         step_greatplacetowork.work = game.add.text(game.world.centerX+30, game.world.centerY, 'WORK!', { font: "54pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
         hud.hide();
-        hud.drawScanlines();
         currentStep = step_greatplacetowork;
-
-
         game.input.onTap.addOnce(step_greatplacetowork.startGame, this);
         game.input.keyboard.onDownCallback = this.keyboardHandler;
     },

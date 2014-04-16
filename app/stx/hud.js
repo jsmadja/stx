@@ -25,6 +25,7 @@ var hud = {
 
     start: function () {
         console.log("hud.start");
+        hud.score = 0;
 
         hud.logo = game.add.sprite(0, game.world.height - 61, 'logo');
         hud.logo.scale.x = 0.7;
@@ -97,6 +98,8 @@ var hud = {
         hud.insertcoin.visible = false;
         hud.hiscoreText.visible = false;
         hud.hallOfFameText.visible = false;
+        hud.scoreText.visible = false;
+
 
         hud.hideHowToPlay();
     },
@@ -110,6 +113,7 @@ var hud = {
         hud.player2.visible = true;
         hud.insertcoin.visible = true;
         hud.hiscoreText.visible = true;
+        hud.scoreText.visible = true;
         hud.showHowToPlay();
 
     },
@@ -118,18 +122,6 @@ var hud = {
     },
     hideHallOfFameTitle: function () {
         hud.hallOfFameText.visible = false;
-    },
-    drawScanlines: function () {
-        /*
-        var graphics = game.add.graphics(0, 0);
-        graphics.beginFill(0x000000);
-        graphics.lineStyle(1, 0x000000, 0.4);
-        for (var i = 0; i < game.world.height; i += 2) {
-            graphics.moveTo(0, i);
-            graphics.lineTo(game.world.width, i);
-        }
-        graphics.endFill();
-        */
     },
     colorHowToPlayItems: function () {
         hud.howtoplay_step1.setStyle(coloredHowToPlay);
@@ -164,7 +156,6 @@ var hud = {
         graphics.moveTo(x, y);
         graphics.lineTo(game.world.width, y);
         graphics.endFill();
-        hud.drawScanlines();
     },
 
     hideLifebar: function (y) {
@@ -175,7 +166,6 @@ var hud = {
         graphics.moveTo(game.world.width - 220, y);
         graphics.lineTo(x, y);
         graphics.endFill();
-        hud.drawScanlines();
     },
 
     hideBossBar: function () {

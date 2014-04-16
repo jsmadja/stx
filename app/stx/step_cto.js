@@ -117,8 +117,6 @@ var step_cto = {
         hud.drawLifebar(cto1.energy, cto1_lifebar_y_position);
         hud.drawLifebar(cto2.energy, cto2_lifebar_y_position);
 
-        hud.drawScanlines();
-
         currentStep = step_cto;
     },
 

@@ -9,7 +9,6 @@ var step_greatplacetofight = {
         step_greatplacetofight.work = game.add.text(game.world.centerX + 50, game.world.centerY, 'FIGHT!', { font: "54pt Pirulen", fill: '#610B5E', strokeThickness: 2 });
         step_greatplacetofight.titleChrono = game.time.now;
         hud.hide();
-        hud.drawScanlines();
         currentStep = step_greatplacetofight;
         game.input.onTap.addOnce(step_greatplacetofight.startGame, this);
         game.input.keyboard.onDownCallback = this.keyboardHandler;

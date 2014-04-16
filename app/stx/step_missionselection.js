@@ -69,6 +69,8 @@ var step_missionselection = {
 
     start: function () {
         game.stage.scale.startFullScreen();
+        hud.score = 0;
+        hud.scoreText.setText('0');
 
         console.log("missionselection.start");
         this.selected_mission_index = new Date().getTime() % 8,
@@ -95,10 +97,7 @@ var step_missionselection = {
         step_missionselection.music.play();
 
         game.input.keyboard.onDownCallback = this.keyboardHandler;
-
-        hud.drawScanlines();
     },
-
 
     keyboardHandler: function (e) {
         switch (e.keyCode) {
